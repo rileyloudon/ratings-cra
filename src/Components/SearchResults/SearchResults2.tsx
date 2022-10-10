@@ -56,9 +56,9 @@ const SearchResults: React.FC = () => {
 
       console.log(data);
       setResults(data);
-    })().catch((err) => {
-      if (typeof err === 'string')
-        setResults({ Response: 'False', Error: err });
+    })().catch((err: unknown) => {
+      if (err instanceof Error)
+        setResults({ Response: 'False', Error: err.message });
     });
   }, [title]);
 
