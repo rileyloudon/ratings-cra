@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { ReactComponent as Spinner } from '../../img/spinner.svg';
 
 interface Results {
   Response: string;
@@ -19,14 +20,19 @@ interface Results {
 const SearchResults: React.FC = () => {
   const { title } = useParams();
   const [results, setResults] = useState<Results>({
-    Response: 'False',
-    Error: 'Please enter a search string',
+    Response: 'Loading',
   });
 
   const renderSearchResults = (): JSX.Element => {
-    if (results.Response === 'False') {
-      return <p>Error: {results.Error}</p>;
-    }
+    if (results.Response === 'Loading')
+      return (
+        <>
+          <Spinner />
+          <p>Searching</p>
+        </>
+      );
+
+    if (results.Response === 'False') return <p>Error: {results.Error}</p>;
 
     // Some items don't have a poster - need to add a default
     // Poster: "N/A"
