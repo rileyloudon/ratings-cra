@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { ReactComponent as Spinner } from '../../img/spinner.svg';
 
 interface Results {
@@ -39,10 +39,10 @@ const SearchResults: React.FC = () => {
     return (
       <div>
         {results.Search?.map((item) => (
-          <div key={item.imdbID}>
+          <Link to={`/title/${item.Title.toLowerCase()}`} key={item.imdbID}>
             <img src={item.Poster} alt={`${item.Title} Poster`} />
             <p>{item.Title}</p>
-          </div>
+          </Link>
         ))}
       </div>
     );
