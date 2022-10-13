@@ -39,7 +39,11 @@ const SearchResults: React.FC = () => {
     return (
       <div>
         {results.Search?.map((item) => (
-          <Link to={`/title/${item.Title.toLowerCase()}`} key={item.imdbID}>
+          <Link
+            to={`/title/${item.Title.toLowerCase()}`}
+            key={item.imdbID}
+            state={item}
+          >
             <img src={item.Poster} alt={`${item.Title} Poster`} />
             <p>{item.Title}</p>
           </Link>
