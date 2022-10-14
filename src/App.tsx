@@ -1,7 +1,8 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Search from './Components/Search/Search';
-import './App.css';
 import SearchResults from './Components/SearchResults/SearchResults';
+import Movie from './Components/Movie/Movie';
+import './App.css';
 
 const App: React.FC = () => (
   // Dont build/use github pages -> use different hosting site then link in readme
@@ -22,7 +23,7 @@ const App: React.FC = () => (
         {/* Search results page */}
         <Route path='/search=:title' element={<SearchResults />} />
         {/* Specific film/tv show page */}
-        {/* <Route path='title/*' element={} /> */}
+        <Route path='title/:title' element={<Movie />} />
       </Routes>
     </BrowserRouter>
   </div>
