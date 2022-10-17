@@ -19,6 +19,7 @@ const Search: React.FC = () => {
           <input
             type='search'
             id='search'
+            placeholder='Search'
             value={searchString}
             onChange={(e) => setSearchString(e.target.value)}
           />
