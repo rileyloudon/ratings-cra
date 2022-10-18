@@ -15,7 +15,7 @@ const Search: React.FC = () => {
     <div>
       <form onSubmit={handleSubmit}>
         <label htmlFor='search'>
-          Search
+          Search for Movies or TV Shows
           <input
             type='search'
             id='search'
