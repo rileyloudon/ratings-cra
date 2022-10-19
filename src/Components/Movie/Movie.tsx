@@ -54,6 +54,8 @@ const Movie: React.FC = () => {
       // Returns specific episode, remove &episode=1 to get full season
       // https://www.omdbapi.com/?apikey={API_KEY}&t=house+of+the+dragon&season=1&episode=1
 
+      // http://www.omdbapi.com/?apikey=&t=Game%20of%20Thrones&Season=1&Episode=1
+
       const response = await fetch(
         `https://www.omdbapi.com/?apikey=${API_KEY}&s=${
           basicMovieInfo.Title || title || ''
