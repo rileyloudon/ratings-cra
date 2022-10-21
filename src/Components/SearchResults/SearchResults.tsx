@@ -28,7 +28,7 @@ const SearchResults: React.FC = () => {
       return (
         <>
           <Spinner />
-          <p>Searching</p>
+          <p>Searching...</p>
         </>
       );
 
