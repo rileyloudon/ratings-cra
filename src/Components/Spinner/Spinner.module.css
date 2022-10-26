@@ -1,0 +1,10 @@
+.spinner {
+  transform-origin: center;
+  animation: spinner_KYSC 0.75s infinite linear;
+}
+
+@keyframes spinner_KYSC {
+  100% {
+    transform: rotate(360deg);
+  }
+}
