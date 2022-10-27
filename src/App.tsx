@@ -1,7 +1,8 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Search from './Components/Search/Search';
+import Home from './Components/Home/Home';
 import SearchResults from './Components/SearchResults/SearchResults';
 import Movie from './Components/Movie/Movie';
+import Header from './Components/Header/Header';
 import './App.css';
 
 const App: React.FC = () => (
@@ -18,11 +19,10 @@ const App: React.FC = () => (
 
   <div className='App'>
     <BrowserRouter>
-      <Search />
+      <Header />
       <Routes>
-        {/* Search results page */}
-        <Route path='/search=:title' element={<SearchResults />} />
-        {/* Specific film/tv show page */}
+        <Route path='*' element={<Home />} />
+        <Route path='search=:title' element={<SearchResults />} />
         <Route path='title/:title' element={<Movie />} />
       </Routes>
     </BrowserRouter>
