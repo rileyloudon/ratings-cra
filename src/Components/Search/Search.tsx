@@ -8,7 +8,7 @@ const Search: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    navigate(`/search=${searchString}`);
+    if (searchString.length >= 1) navigate(`/search=${searchString}`);
   };
 
   return (
