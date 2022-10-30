@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ReactComponent as Spinner } from '../../img/spinner.svg';
+import Spinner from '../Spinner/Spinner';
+import styles from './SearchResults.module.css';
 
 interface Results {
   Response: string;
@@ -32,7 +33,7 @@ const SearchResults: React.FC = () => {
         </>
       );
 
-    if (results.Response === 'False') return <p>Error: {results.Error}</p>;
+    if (results.Response === 'False') return <p>{results.Error}</p>;
 
     // Some items don't have a poster - need to add a default
     // Poster: "N/A"
@@ -72,7 +73,7 @@ const SearchResults: React.FC = () => {
     });
   }, [title]);
 
-  return <div>{renderSearchResults()}</div>;
+  return <div className={styles.results}>{renderSearchResults()}</div>;
 };
 
 export default SearchResults;
