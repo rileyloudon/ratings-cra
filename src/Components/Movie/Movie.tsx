@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { ReactComponent as Spinner } from '../../img/spinner.svg';
+import { ReactComponent as IMDbLogo } from '../../img/imdb-logo.svg';
+import Spinner from '../Spinner/Spinner';
 
 interface LocationMovie {
   Poster: string;
@@ -47,88 +48,6 @@ const Movie: React.FC = () => {
     Response: 'Loading',
   });
 
-  // OMDB seems to having problems with thier api, here's a copy of season 1 westworld
-  const movieEpisodeData = {
-    Title: 'Westworld',
-    Season: '1',
-    totalSeasons: '4',
-    Episodes: [
-      {
-        Title: 'The Original',
-        Released: '2016-10-02',
-        Episode: '1',
-        imdbRating: 'N/A',
-        imdbID: 'tt4227538',
-      },
-      {
-        Title: 'Chestnut',
-        Released: '2016-10-09',
-        Episode: '2',
-        imdbRating: '8.5',
-        imdbID: 'tt4562758',
-      },
-      {
-        Title: 'The Stray',
-        Released: '2016-10-16',
-        Episode: '3',
-        imdbRating: '8.2',
-        imdbID: 'tt4625856',
-      },
-      {
-        Title: 'Dissonance Theory',
-        Released: '2016-10-23',
-        Episode: '4',
-        imdbRating: '8.6',
-        imdbID: 'tt4625862',
-      },
-      {
-        Title: 'Contrapasso',
-        Released: '2016-10-30',
-        Episode: '5',
-        imdbRating: '8.6',
-        imdbID: 'tt4625866',
-      },
-      {
-        Title: 'The Adversary',
-        Released: '2016-11-06',
-        Episode: '6',
-        imdbRating: '8.8',
-        imdbID: 'tt4630544',
-      },
-      {
-        Title: "Trompe L'Oeil",
-        Released: '2016-11-13',
-        Episode: '7',
-        imdbRating: '9.4',
-        imdbID: 'tt4630546',
-      },
-      {
-        Title: 'Trace Decay',
-        Released: '2016-11-20',
-        Episode: '8',
-        imdbRating: '8.7',
-        imdbID: 'tt4458814',
-      },
-      {
-        Title: 'The Well-Tempered Clavier',
-        Released: '2016-11-27',
-        Episode: '9',
-        imdbRating: '9.3',
-        imdbID: 'tt5220026',
-      },
-      {
-        Title: 'The Bicameral Mind',
-        Released: '2016-12-04',
-        Episode: '10',
-        imdbRating: '9.7',
-        imdbID: 'tt5229638',
-      },
-    ],
-    Response: 'True',
-  };
-
-  console.log(movieEpisodeData);
-
   useEffect(() => {
     (async (): Promise<void> => {
       const API_KEY: string = process.env.REACT_APP_API_KEY!;
@@ -171,6 +90,16 @@ const Movie: React.FC = () => {
       <div>
         <img src={detailedMovieInfo.Poster || basicMovieInfo.Poster} alt='' />
         <p>{detailedMovieInfo.Title || basicMovieInfo.Title}</p>
+        {detailedMovieInfo && (
+          <>
+            <p>
+              <IMDbLogo />
+              {detailedMovieInfo.imdbRating}
+            </p>
+            <p>{detailedMovieInfo.imdbVotes} Votes</p>
+            <p>{detailedMovieInfo.Plot}</p>
+          </>
+        )}
         <a
           href={`https://www.imdb.com/title/${basicMovieInfo.imdbID}`}
           target='_blank'
