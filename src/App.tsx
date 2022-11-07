@@ -8,17 +8,6 @@ import ThemeContext from './Context/ThemeContext';
 import './App.css';
 
 const App: React.FC = () => {
-  // Dont build/use github pages -> use different hosting site then link in readme
-  // Keep api key safe ^
-
-  // pages:
-  // Homepage with search in center
-  // Search results page, move search to top. multiple pages of 10 results each
-  // move/show page, keep search, add graphs for ratings, links to IMDB, view different seasons
-
-  // const [movie, setMovie] = useState<unknown>();
-  // const [error, setError] = useState<unknown>();
-
   const fallbackTheme = window.matchMedia('(prefers-color-scheme: dark)')
     .matches
     ? 'dark'
@@ -26,16 +15,24 @@ const App: React.FC = () => {
   const [theme, setTheme] = useState<string>(
     localStorage.getItem('theme') || fallbackTheme
   );
-
   const changeTheme = useMemo(() => ({ theme, setTheme }), [theme]);
+
+  const [currentSearch, setCurrentSearch] = useState<string>('');
+  const updateCurrentSearch = (value: string): void => setCurrentSearch(value);
 
   return (
     <div className='App' data-theme={theme}>
       <BrowserRouter>
         <ThemeContext.Provider value={changeTheme}>
-          <Header />
+          <Header
+            currentSearch={currentSearch}
+            updateCurrentSearch={updateCurrentSearch}
+          />
           <Routes>
-            <Route path='*' element={<Home />} />
+            <Route
+              path='*'
+              element={<Home updateCurrentSearch={updateCurrentSearch} />}
+            />
             <Route path='search=:title' element={<SearchResults />} />
             <Route path='title/:title' element={<Movie />} />
           </Routes>
