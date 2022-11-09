@@ -1,25 +1,42 @@
-import { useState } from 'react';
+import { FocusEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import styles from './Search.module.css';
+import styles from './Search.module.css';
 
-const Search: React.FC = () => {
+interface SearchProps {
+  currentSearch?: string;
+  updateCurrentSearch(value: string): void;
+}
+
+const Search: React.FC<SearchProps> = ({
+  currentSearch = '',
+  updateCurrentSearch,
+}) => {
   const navigate = useNavigate();
-  const [searchString, setSearchString] = useState<string>('');
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+  const [searchString, setSearchString] = useState<string>(currentSearch);
+
+  const handleFocus = (e: FocusEvent<HTMLInputElement>): void =>
+    e.target.select();
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    if (searchString.length >= 1) navigate(`/search=${searchString}`);
+    if (searchString.length >= 1) {
+      updateCurrentSearch(searchString);
+      navigate(`/search=${searchString}`);
+    }
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <input
           type='search'
-          id='search'
           placeholder='Search'
           value={searchString}
           onChange={(e) => setSearchString(e.target.value)}
+          onFocus={handleFocus}
+          // fixes safari handleFocus not selecting
+          onMouseUp={(e) => e.preventDefault()}
         />
         <button type='submit'>Search</button>
       </form>
