@@ -36,6 +36,11 @@
       2,
       { "namedComponents": "arrow-function" }
     ],
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "react/require-default-props": [
+      {
+        "functions": "defaultArguments"
+      }
+    ]
   }
 }
