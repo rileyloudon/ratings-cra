@@ -1,14 +1,39 @@
 .container {
   padding: 8px;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  align-items: center;
 }
 
 .title {
   margin: 0;
+  flex: 1;
 }
 
 .title a {
+  margin-right: auto;
+  color: var(--text);
   text-decoration: none;
+}
+
+.button-container {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  font-size: 14px;
+  padding: 6px 12px;
+  background-color: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.button svg {
+  fill: var(--text);
+  margin-right: 6px;
 }
