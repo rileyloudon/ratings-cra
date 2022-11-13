@@ -7,10 +7,7 @@ interface SearchProps {
   updateCurrentSearch(value: string): void;
 }
 
-const Search: React.FC<SearchProps> = ({
-  currentSearch = '',
-  updateCurrentSearch,
-}) => {
+const Search = ({ currentSearch = '', updateCurrentSearch }: SearchProps) => {
   const navigate = useNavigate();
 
   const [searchString, setSearchString] = useState<string>(currentSearch);

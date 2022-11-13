@@ -37,7 +37,7 @@ interface Results {
   Error?: string;
 }
 
-const Movie: React.FC = () => {
+const Movie = () => {
   const location = useLocation();
   const { title } = useParams();
 

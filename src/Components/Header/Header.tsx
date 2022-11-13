@@ -11,10 +11,7 @@ interface HeaderProps {
   updateCurrentSearch(value: string): void;
 }
 
-const Header: React.FC<HeaderProps> = ({
-  currentSearch,
-  updateCurrentSearch,
-}) => {
+const Header = ({ currentSearch, updateCurrentSearch }: HeaderProps) => {
   const location = useLocation();
 
   const currentTheme = useContext(ThemeContext);

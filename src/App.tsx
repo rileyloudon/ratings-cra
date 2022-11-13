@@ -7,7 +7,7 @@ import Header from './Components/Header/Header';
 import ThemeContext from './Context/ThemeContext';
 import './App.css';
 
-const App: React.FC = () => {
+const App = () => {
   const fallbackTheme = window.matchMedia('(prefers-color-scheme: dark)')
     .matches
     ? 'dark'
