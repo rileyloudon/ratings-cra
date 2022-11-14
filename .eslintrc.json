@@ -38,6 +38,7 @@
     ],
     "react/prop-types": "off",
     "react/require-default-props": [
+      0,
       {
         "functions": "defaultArguments"
       }
