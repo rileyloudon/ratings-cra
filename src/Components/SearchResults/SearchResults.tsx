@@ -14,12 +14,13 @@ interface Results {
       imdbID: string;
     }
   ];
-  totalReslts?: string;
+  totalResults?: string;
   Error?: string;
 }
 
-const SearchResults: React.FC = () => {
+const SearchResults = () => {
   const { title } = useParams();
+
   const [results, setResults] = useState<Results>({
     Response: 'Loading',
   });
@@ -35,21 +36,29 @@ const SearchResults: React.FC = () => {
 
     if (results.Response === 'False') return <p>{results.Error}</p>;
 
-    // Some items don't have a poster - need to add a default
-    // Poster: "N/A"
+    // const totalPages = Math.ceil(
+    //   parseInt(results.totalResults || '1', 10) / 10
+    // );
+
     return (
-      <div>
+      <>
         {results.Search?.map((item) => (
           <Link
             to={`/title/${item.Title.toLowerCase()}`}
             key={item.imdbID}
             state={item}
+            className={styles['search-item']}
           >
-            <img src={item.Poster} alt={`${item.Title} Poster`} />
+            {item.Poster !== 'N/A' ? (
+              <img src={item.Poster} alt={`${item.Title} Poster`} />
+            ) : (
+              <p className={styles['no-poster']}>No Poster</p>
+            )}
             <p>{item.Title}</p>
           </Link>
         ))}
-      </div>
+        <div className={styles['page-selector']}>{/* Page Buttons */}</div>
+      </>
     );
   };
 
