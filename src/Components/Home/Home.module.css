@@ -1,0 +1,8 @@
+.container {
+  text-align: center;
+  height: 100vh;
+}
+
+.container p {
+  color: var(--text);
+}
