@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { ReactComponent as IMDbLogo } from '../../img/imdb-logo.svg';
 import Spinner from '../Spinner/Spinner';
+import styles from './Movie.module.css';
 
 interface LocationMovie {
   Poster: string;
@@ -84,11 +85,17 @@ const Movie = () => {
     if (detailedMovieInfo.Response === 'False')
       return <p>Error: {detailedMovieInfo.Error}</p>;
 
-    // Some items don't have a poster - need to add a default
-    // Poster: "N/A"
+    // basicMovieInfo is data forwarded from clicking a search result.
+    // It's missing some data though, so we also need to fetch detailedMovieInfo from OMDB api.
+
     return (
       <div>
-        <img src={detailedMovieInfo.Poster || basicMovieInfo.Poster} alt='' />
+        {detailedMovieInfo.Poster !== 'N/A' ||
+        basicMovieInfo.Poster !== 'N/A' ? (
+          <img src={detailedMovieInfo.Poster || basicMovieInfo.Poster} alt='' />
+        ) : (
+          <p className={styles['no-poster']}>No Poster</p>
+        )}
         <p>{detailedMovieInfo.Title || basicMovieInfo.Title}</p>
         {detailedMovieInfo && (
           <>
