@@ -55,15 +55,16 @@ interface Success {
   total_results: number;
 }
 
-interface Error {
-  status_message: string;
-  status_code: number;
-}
+// interface Fail {
+//   status_message: string;
+//   status_code: number;
+// }
 
 const SearchResults = () => {
   const { title } = useParams();
 
-  const [results, setResults] = useState<Results>({});
+  const [results, setResults] = useState<Success>();
+  // const [error, setError] = useState<Fail>();
 
   const renderSearchResults = (): JSX.Element => {
     if (!results)
@@ -74,7 +75,7 @@ const SearchResults = () => {
         </>
       );
 
-    if (results.status_message) return <p>{results.status_message}</p>;
+    // if (!results.page) return <p>{results.status_message}</p>;
 
     // const totalPages = Math.ceil(
     //   parseInt(results.totalResults || '1', 10) / 10
@@ -83,25 +84,66 @@ const SearchResults = () => {
     // tv shows use 'name', moveies use 'title'
     return (
       <>
-        {results.results?.map((item) => (
-          <Link
-            // to={`/title/${item.name.toLowerCase()}`}
-            to='/title'
-            key={item.id}
-            state={item}
-            className={styles['search-item']}
-          >
-            {item.poster_path !== null ? (
-              <img
-                src={`https://image.tmdb.org/t/p/w300/${item.poster_path}`}
-                alt={`${item.name} Poster`}
-              />
-            ) : (
-              <p className={styles['no-poster']}>No Poster</p>
-            )}
-            <p>{item.name}</p>
-          </Link>
-        ))}
+        {results.results?.map((item) => {
+          if (item.media_type === 'tv') {
+            return (
+              <Link
+                to={`/title/${item.name.toLowerCase()}`}
+                key={item.id}
+                state={item}
+                className={styles['search-item']}
+              >
+                {item.poster_path !== null ? (
+                  <img
+                    src={`https://image.tmdb.org/t/p/w300/${item.poster_path}`}
+                    alt={`${item.name} Poster`}
+                  />
+                ) : (
+                  <p className={styles['no-poster']}>No Poster</p>
+                )}
+                <p>{item.name}</p>
+              </Link>
+            );
+          }
+          if (item.media_type === 'movie') {
+            return (
+              <Link
+                to={`/title/${item.title.toLowerCase()}`}
+                key={item.id}
+                state={item}
+                className={styles['search-item']}
+              >
+                {item.poster_path !== null ? (
+                  <img
+                    src={`https://image.tmdb.org/t/p/w300/${item.poster_path}`}
+                    alt={`${item.title} Poster`}
+                  />
+                ) : (
+                  <p className={styles['no-poster']}>No Poster</p>
+                )}
+                <p>{item.title}</p>
+              </Link>
+            );
+          }
+          return (
+            <Link
+              to={`/title/${item.name.toLowerCase()}`}
+              key={item.id}
+              state={item}
+              className={styles['search-item']}
+            >
+              {item.profile_path !== null ? (
+                <img
+                  src={`https://image.tmdb.org/t/p/w300/${item.profile_path}`}
+                  alt={`${item.name} Poster`}
+                />
+              ) : (
+                <p className={styles['no-poster']}>No Poster</p>
+              )}
+              <p>{item.name}</p>
+            </Link>
+          );
+        })}
         <div className={styles['page-selector']}>{/* Page Buttons */}</div>
       </>
     );
@@ -116,12 +158,12 @@ const SearchResults = () => {
           title || ''
         }&page=1&include_adult=false`
       );
-      const data = (await response.json()) as Results;
+      const data = (await response.json()) as Success;
 
       console.log(data);
       setResults(data);
     })().catch((err: unknown) => {
-      if (err instanceof Error) setResults({ status_message: err.message });
+      if (err instanceof Error) console.log(err);
     });
   }, [title]);
 
