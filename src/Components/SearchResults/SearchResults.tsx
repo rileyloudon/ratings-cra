@@ -48,23 +48,23 @@ interface Person {
   popularity: number;
 }
 
-interface Success {
-  page: number;
-  results: (TvShow | Movie | Person)[];
-  total_pages: number;
-  total_results: number;
-}
+interface ApiResponse {
+  // Success:
+  page?: number;
+  results?: (TvShow | Movie | Person)[];
+  total_pages?: number;
+  total_results?: number;
 
-// interface Fail {
-//   status_message: string;
-//   status_code: number;
-// }
+  // Error:
+  status_message?: string;
+  status_code?: number;
+}
 
 const SearchResults = () => {
   const { title } = useParams();
 
-  const [results, setResults] = useState<Success>();
-  // const [error, setError] = useState<Fail>();
+  const [results, setResults] = useState<ApiResponse>();
+  const [error, setError] = useState<Error>();
 
   const renderSearchResults = (): JSX.Element => {
     if (!results)
@@ -75,13 +75,14 @@ const SearchResults = () => {
         </>
       );
 
-    // if (!results.page) return <p>{results.status_message}</p>;
+    if (error) return <p>{error.message}</p>;
+
+    if (results.status_message) return <p>{results.status_message}</p>;
 
     // const totalPages = Math.ceil(
     //   parseInt(results.totalResults || '1', 10) / 10
     // );
 
-    // tv shows use 'name', moveies use 'title'
     return (
       <>
         {results.results?.map((item) => {
@@ -158,12 +159,12 @@ const SearchResults = () => {
           title || ''
         }&page=1&include_adult=false`
       );
-      const data = (await response.json()) as Success;
+      const data = (await response.json()) as ApiResponse;
 
       console.log(data);
       setResults(data);
     })().catch((err: unknown) => {
-      if (err instanceof Error) console.log(err);
+      if (err instanceof Error) setError(err);
     });
   }, [title]);
 
