@@ -34,7 +34,9 @@ const App = () => {
               element={<Home updateCurrentSearch={updateCurrentSearch} />}
             />
             <Route path='search=:title' element={<SearchResults />} />
-            <Route path='title/:title' element={<Movie />} />
+            <Route path='movie/:movie' element={<Movie />} />
+            <Route path='tvshow/:tvshow' element={<TvShow />} />
+            <Route path='person/:person' element={<Person />} />
           </Routes>
         </ThemeContext.Provider>
       </BrowserRouter>
