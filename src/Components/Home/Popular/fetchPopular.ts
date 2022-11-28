@@ -1,17 +1,27 @@
 import { TvShow, Movie } from '../../../interfaces';
 
 interface PopularTV {
-  page: 1;
-  results: TvShow[];
-  total_results: number;
-  total_pages: number;
+  // Success
+  page?: 1;
+  results?: TvShow[];
+  total_results?: number;
+  total_pages?: number;
+
+  // Error
+  status_message?: string;
+  status_code?: number;
 }
 
 interface PopularMovie {
-  page: 1;
-  results: Movie[];
-  total_results: number;
-  total_pages: number;
+  // Success
+  page?: 1;
+  results?: Movie[];
+  total_results?: number;
+  total_pages?: number;
+
+  // Error
+  status_message?: string;
+  status_code?: number;
 }
 
 const fetchPopular = async () => {
@@ -27,14 +37,17 @@ const fetchPopular = async () => {
   );
   const movieData = (await movieResponse.json()) as PopularMovie;
 
-  const combinedPopular: (Movie | TvShow)[] = [
-    ...tvData.results,
-    ...movieData.results,
-  ]
-    .sort((a, b) => b.popularity - a.popularity)
-    .slice(0, 10);
+  if (tvData.results && movieData.results) {
+    const combinedPopular: (Movie | TvShow)[] = [
+      ...tvData.results,
+      ...movieData.results,
+    ]
+      .sort((a, b) => b.popularity - a.popularity)
+      .slice(0, 10);
+    return combinedPopular;
+  }
 
-  return combinedPopular;
+  return tvData.status_message || movieData.status_message;
 };
 
 export default fetchPopular;
