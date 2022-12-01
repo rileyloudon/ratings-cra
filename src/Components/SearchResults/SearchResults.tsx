@@ -1,52 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Spinner from '../Spinner/Spinner';
+import { TvShow, Movie, Person } from '../../interfaces';
 import styles from './SearchResults.module.css';
-
-interface TvShow {
-  poster_path: string | null;
-  popularity: number;
-  id: number;
-  overview: string;
-  backdrop_path: string | null;
-  vote_average: number;
-  media_type: 'tv';
-  first_air_date: string;
-  origin_country: string[];
-  genre_ids: number[];
-  original_language: string;
-  vote_count: number;
-  name: string;
-  original_name: string;
-}
-
-interface Movie {
-  poster_path: string | null;
-  adult: boolean;
-  overview: string;
-  release_date: string;
-  original_title: string;
-  genre_ids: number[];
-  id: number;
-  media_type: 'movie';
-  original_language: string;
-  title: string;
-  backdrop_path: string | null;
-  popularity: number;
-  vote_count: number;
-  video: boolean;
-  vote_average: number;
-}
-
-interface Person {
-  profile_path: string | null;
-  adult: boolean;
-  id: number;
-  media_type: 'person';
-  known_for: (TvShow | Movie)[];
-  name: string;
-  popularity: number;
-}
 
 interface ApiResponse {
   // Success:
@@ -86,17 +42,17 @@ const SearchResults = () => {
     return (
       <>
         {results.results?.map((item) => {
-          if (item.media_type === 'tv') {
+          if ('profile_path' in item) {
             return (
               <Link
-                to={`/title/${item.name.toLowerCase()}`}
+                to={`/actor/${item.name.toLowerCase()}`}
                 key={item.id}
                 state={item}
                 className={styles['search-item']}
               >
-                {item.poster_path !== null ? (
+                {item.profile_path !== null ? (
                   <img
-                    src={`https://image.tmdb.org/t/p/w300/${item.poster_path}`}
+                    src={`https://image.tmdb.org/t/p/w300/${item.profile_path}`}
                     alt={`${item.name} Poster`}
                   />
                 ) : (
@@ -106,10 +62,10 @@ const SearchResults = () => {
               </Link>
             );
           }
-          if (item.media_type === 'movie') {
+          if ('title' in item) {
             return (
               <Link
-                to={`/title/${item.title.toLowerCase()}`}
+                to={`/movie/${item.title.toLowerCase()}`}
                 key={item.id}
                 state={item}
                 className={styles['search-item']}
@@ -128,14 +84,14 @@ const SearchResults = () => {
           }
           return (
             <Link
-              to={`/title/${item.name.toLowerCase()}`}
+              to={`/tvshow/${item.name.toLowerCase()}`}
               key={item.id}
               state={item}
               className={styles['search-item']}
             >
-              {item.profile_path !== null ? (
+              {item.poster_path !== null ? (
                 <img
-                  src={`https://image.tmdb.org/t/p/w300/${item.profile_path}`}
+                  src={`https://image.tmdb.org/t/p/w300/${item.poster_path}`}
                   alt={`${item.name} Poster`}
                 />
               ) : (
