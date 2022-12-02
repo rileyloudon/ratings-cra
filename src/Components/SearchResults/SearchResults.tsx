@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { Movie, Person, TvShow } from '../../interfaces';
 import Spinner from '../Spinner/Spinner';
-import { TvShow, Movie, Person } from '../../interfaces';
+import fetchSearchResults from './fetchSearchResults';
 import styles from './SearchResults.module.css';
 
 interface ApiResponse {
@@ -108,15 +109,7 @@ const SearchResults = () => {
 
   useEffect(() => {
     (async (): Promise<void> => {
-      const API_KEY: string = process.env.REACT_APP_API_KEY!;
-
-      const response = await fetch(
-        `https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&language=en-US&query=${
-          title || ''
-        }&page=1&include_adult=false`
-      );
-      const data = (await response.json()) as ApiResponse;
-
+      const data = await fetchSearchResults(title);
       console.log(data);
       setResults(data);
     })().catch((err: unknown) => {
