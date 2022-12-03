@@ -17,7 +17,7 @@ const Popular = () => {
     if (typeof currentPopular === 'string') return <p>{currentPopular}</p>;
 
     return (
-      <div className={styles.popular}>
+      <div className={styles['popular-posters']}>
         {currentPopular?.map((item) => {
           if ('name' in item)
             return (
@@ -70,7 +70,7 @@ const Popular = () => {
   }, []);
   return (
     <>
-      <p>Popular</p>
+      <p className={styles.popular}>Popular Now</p>
       {renderPopular()}
     </>
   );
