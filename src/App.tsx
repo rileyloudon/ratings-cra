@@ -2,7 +2,9 @@ import { useMemo, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './Components/Home/Home';
 import SearchResults from './Components/SearchResults/SearchResults';
+import TvShow from './Components/DetailedView/TvShow/TvShow';
 import Movie from './Components/DetailedView/Movie/Movie';
+import Actor from './Components/DetailedView/Actor/Actor';
 import Header from './Components/Header/Header';
 import ThemeContext from './Context/ThemeContext';
 import './App.css';
@@ -34,9 +36,9 @@ const App = () => {
               element={<Home updateCurrentSearch={updateCurrentSearch} />}
             />
             <Route path='search=:title' element={<SearchResults />} />
-            <Route path='tvshow/:title' element={<TvShow />} />
-            <Route path='movie/:title' element={<Movie />} />
-            <Route path='actor/:name' element={<Actor />} />
+            <Route path='tvshow/:tvShowId' element={<TvShow />} />
+            <Route path='movie/:movieId' element={<Movie />} />
+            <Route path='actor/:actorId' element={<Actor />} />
           </Routes>
         </ThemeContext.Provider>
       </BrowserRouter>
