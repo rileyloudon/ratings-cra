@@ -46,7 +46,7 @@ const SearchResults = () => {
           if ('profile_path' in item) {
             return (
               <Link
-                to={`/actor/${item.name.toLowerCase()}`}
+                to={`/actor/${item.id}`}
                 key={item.id}
                 state={item}
                 className={styles['search-item']}
@@ -66,7 +66,7 @@ const SearchResults = () => {
           if ('title' in item) {
             return (
               <Link
-                to={`/movie/${item.title.toLowerCase()}`}
+                to={`/movie/${item.id}`}
                 key={item.id}
                 state={item}
                 className={styles['search-item']}
@@ -85,7 +85,7 @@ const SearchResults = () => {
           }
           return (
             <Link
-              to={`/tvshow/${item.name.toLowerCase()}`}
+              to={`/tvshow/${item.id}`}
               key={item.id}
               state={item}
               className={styles['search-item']}

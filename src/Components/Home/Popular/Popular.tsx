@@ -22,7 +22,7 @@ const Popular = () => {
           if ('name' in item)
             return (
               <Link
-                to={`/tvshow/${item.name.toLowerCase()}`}
+                to={`/tvshow/${item.id}`}
                 key={item.id}
                 state={item}
                 className={styles['popular-item']}
@@ -40,7 +40,7 @@ const Popular = () => {
 
           return (
             <Link
-              to={`/movie/${item.title.toLowerCase()}`}
+              to={`/movie/${item.id}`}
               key={item.id}
               state={item}
               className={styles['popular-item']}
