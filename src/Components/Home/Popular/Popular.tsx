@@ -64,9 +64,7 @@ const Popular = () => {
     (async (): Promise<void> => {
       const res = await fetchPopular();
       setCurrentPopular(res);
-    })().catch((err: unknown) => {
-      if (err instanceof Error) setError(err);
-    });
+    })().catch((err: Error) => setError(err));
   }, []);
   return (
     <>

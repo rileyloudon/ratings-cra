@@ -110,11 +110,8 @@ const SearchResults = () => {
   useEffect(() => {
     (async (): Promise<void> => {
       const data = await fetchSearchResults(title);
-      console.log(data);
       setResults(data);
-    })().catch((err: unknown) => {
-      if (err instanceof Error) setError(err);
-    });
+    })().catch((err: Error) => setError(err));
   }, [title]);
 
   return <div className={styles.results}>{renderSearchResults()}</div>;
