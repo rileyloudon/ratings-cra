@@ -1,0 +1,18 @@
+.popular-posters {
+  display: flex;
+  overflow: scroll;
+}
+
+.popular-item {
+  padding: 5px;
+}
+
+.popular {
+  padding-bottom: 8px;
+}
+
+.no-poster {
+  height: 200px;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+}
