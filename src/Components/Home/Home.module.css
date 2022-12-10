@@ -3,6 +3,6 @@
   height: 100vh;
 }
 
-.container p {
+.instructions {
   color: var(--text);
 }
