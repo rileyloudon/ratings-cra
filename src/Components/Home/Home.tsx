@@ -8,7 +8,7 @@ interface HomeProps {
 
 const Home = ({ updateCurrentSearch }: HomeProps) => (
   <div className={styles.container}>
-    <p>Search for Movies or TV Shows</p>
+    <p className={styles.instructions}>Search for Movies or TV Shows</p>
     <Search updateCurrentSearch={updateCurrentSearch} />
     <Popular />
   </div>
