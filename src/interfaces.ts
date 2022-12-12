@@ -32,7 +32,12 @@ export interface Movie {
   vote_count: number;
   video: boolean;
   vote_average: number;
-  belongs_to_collection?: string | null;
+  belongs_to_collection?: {
+    id: number;
+    name: string;
+    poster_path: string;
+    backdrop_path: string;
+  } | null;
   runtime?: number;
 }
 
