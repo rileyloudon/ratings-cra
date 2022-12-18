@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { ApiError, Movie as MovieInterface } from '../../../interfaces';
+import Graphs from './Graphs/Graphs';
 import Spinner from '../../Spinner/Spinner';
 import fetchMovieData from './fetchMovieData';
 import fetchWatchProviders from './fetchWatchProviders';
@@ -90,9 +91,12 @@ const Movie = () => {
     );
   };
 
-  // Movie graphs:
-  // compared to collection
-  return <div>{renderMovie()}</div>;
+  return (
+    <div className={styles.container}>
+      <div>{renderMovie()}</div>
+      {movieData && <Graphs movieData={movieData} />}
+    </div>
+  );
 };
 
 export default Movie;
