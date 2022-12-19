@@ -23,9 +23,10 @@ const fetchCollectionData = async (collectionId: number | undefined) => {
   const collectionData = (await response.json()) as CollectionData;
   if ('status_message' in collectionData) return collectionData;
 
-  const sortedParts: Movie[] = collectionData.parts.sort((a, b) =>
-    a.release_date.localeCompare(b.release_date)
-  );
+  const now = Date.now();
+  const sortedParts: Movie[] = collectionData.parts
+    .sort((a, b) => a.release_date.localeCompare(b.release_date))
+    .filter((a) => new Date(a.release_date).getTime() < now);
 
   return { ...collectionData, parts: sortedParts };
 };
