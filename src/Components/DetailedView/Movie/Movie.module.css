@@ -1,0 +1,31 @@
+.no-poster {
+  height: 200px;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  padding-bottom: 200px;
+}
+
+.title,
+.info,
+.overview {
+  color: var(--text);
+}
+
+.released {
+  font-weight: normal;
+}
+
+.info .genres::before {
+  content: '';
+  padding: 0px;
+}
+
+.info span::before {
+  content: '\2022';
+  padding: 8px;
+}
