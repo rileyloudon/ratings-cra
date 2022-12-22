@@ -1,6 +1,7 @@
 .spinner {
   transform-origin: center;
   animation: spinner_KYSC 0.75s infinite linear;
+  fill: var(--text);
 }
 
 @keyframes spinner_KYSC {
