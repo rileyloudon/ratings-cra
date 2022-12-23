@@ -28,6 +28,7 @@ const Movie = () => {
 
   useEffect(() => {
     (async (): Promise<void> => {
+      window.scrollTo(0, 0);
       const data = await fetchMovieData(movieId);
       setMovieData(data);
 
@@ -45,7 +46,7 @@ const Movie = () => {
     if (watchProviders?.flatrate)
       return `Stream on ${watchProviders.flatrate[0].provider_name}`;
 
-    return 'Unavailable to stream';
+    return 'Unavailable to Stream';
   };
 
   const renderMovie = (): JSX.Element => {
@@ -66,28 +67,33 @@ const Movie = () => {
     const minutes = movieData.runtime ? movieData.runtime % 60 : 0;
     const time = `${hours ? `${hours}h` : ''} ${minutes ? `${minutes}m` : ''}`;
     return (
-      <>
+      <div className={styles.header}>
         {movieData.poster_path !== null ? (
           <img
+            className={styles.poster}
             src={`https://image.tmdb.org/t/p/w300/${movieData.poster_path}`}
             alt=''
           />
         ) : (
           <p className={styles['no-poster']}>No Poster</p>
         )}
-        <h2>
-          {movieData.title}
-          <span>({yearReleased})</span>
-        </h2>
-        <div>
-          <span>
-            {movieData.genres?.map((item, i) => `${i ? ', ' : ''}${item.name}`)}
-          </span>
-          <span>{time}</span>
-          <span>{renderWatchProviders()}</span>
+        <div className={styles.text}>
+          <h2 className={styles.title}>
+            {movieData.title}
+            <span className={styles.released}> ({yearReleased})</span>
+          </h2>
+          <div className={styles.info}>
+            <span className={styles.genres}>
+              {movieData.genres?.map(
+                (item, i) => `${i ? ', ' : ''}${item.name}`
+              )}
+            </span>
+            <span>{time}</span>
+            <span>{renderWatchProviders()}</span>
+          </div>
+          <p className={styles.overview}>{movieData.overview}</p>
         </div>
-        <p>{movieData.overview}</p>
-      </>
+      </div>
     );
   };
 
