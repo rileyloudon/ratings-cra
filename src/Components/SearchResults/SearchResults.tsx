@@ -24,15 +24,15 @@ const SearchResults = () => {
   const [error, setError] = useState<Error>();
 
   const renderSearchResults = (): JSX.Element => {
+    if (error) return <p>{error.message}</p>;
+
     if (!results)
       return (
-        <>
+        <div className={styles.searching}>
           <Spinner />
           <p>Searching...</p>
-        </>
+        </div>
       );
-
-    if (error) return <p>{error.message}</p>;
 
     if (results.status_message) return <p>{results.status_message}</p>;
 
