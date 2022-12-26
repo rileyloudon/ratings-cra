@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { ApiError, Movie as MovieInterface } from '../../../interfaces';
+import {
+  ApiError,
+  Movie as MovieInterface,
+  DetailedMovie,
+} from '../../../interfaces';
 import Graphs from './Graphs/Graphs';
 import Spinner from '../../Spinner/Spinner';
 import fetchMovieData from './fetchMovieData';
-import fetchWatchProviders from './fetchWatchProviders';
+import fetchWatchProviders from '../fetchWatchProviders';
 import styles from './Movie.module.css';
 
-type MovieData = MovieInterface | ApiError;
+type MovieData = DetailedMovie | MovieInterface | ApiError;
 
 interface StreamData {
   link: string;
@@ -32,7 +36,7 @@ const Movie = () => {
       const data = await fetchMovieData(movieId);
       setMovieData(data);
 
-      const streamData = await fetchWatchProviders(movieId);
+      const streamData = await fetchWatchProviders('movie', movieId);
       setWatchProviders(streamData);
     })().catch((err: Error) => setError(err));
   }, [movieId]);
@@ -63,8 +67,12 @@ const Movie = () => {
     if ('status_message' in movieData) return <p>{movieData.status_message}</p>;
 
     const yearReleased = movieData.release_date.slice(0, 4);
-    const hours = movieData.runtime ? Math.trunc(movieData.runtime / 60) : 0;
-    const minutes = movieData.runtime ? movieData.runtime % 60 : 0;
+    const hours =
+      'runtime' in movieData && movieData.runtime
+        ? Math.trunc(movieData.runtime / 60)
+        : 0;
+    const minutes =
+      'runtime' in movieData && movieData.runtime ? movieData.runtime % 60 : 0;
     const time = `${hours ? `${hours}h` : ''} ${minutes ? `${minutes}m` : ''}`;
     return (
       <div className={styles.header}>
@@ -84,9 +92,10 @@ const Movie = () => {
           </h2>
           <div className={styles.info}>
             <span className={styles.genres}>
-              {movieData.genres?.map(
-                (item, i) => `${i ? ', ' : ''}${item.name}`
-              )}
+              {'genres' in movieData &&
+                movieData.genres?.map(
+                  (item, i) => `${i ? ', ' : ''}${item.name}`
+                )}
             </span>
             <span>{time}</span>
             <span>{renderWatchProviders()}</span>
@@ -100,7 +109,9 @@ const Movie = () => {
   return (
     <div className={styles.container}>
       <div>{renderMovie()}</div>
-      {movieData && <Graphs movieData={movieData} />}
+      {movieData && 'belongs_to_collection' in movieData && (
+        <Graphs movieData={movieData} />
+      )}
     </div>
   );
 };
