@@ -66,12 +66,13 @@ const Popular = () => {
       setCurrentPopular(res);
     })().catch((err: Error) => setError(err));
   }, []);
-  return (
-    <>
-      <p className={styles.popular}>Popular Now</p>
+
+  return currentPopular || error ? (
+    <div className={styles.popular}>
+      <p>Popular Now</p>
       {renderPopular()}
-    </>
-  );
+    </div>
+  ) : null;
 };
 
 export default Popular;
