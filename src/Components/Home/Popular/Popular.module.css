@@ -1,3 +1,9 @@
+.popular {
+  position: relative;
+  top: 20%;
+  transform: translateY(-20%);
+}
+
 .popular-posters {
   display: flex;
   overflow: scroll;
@@ -7,8 +13,9 @@
   margin: 5px;
 }
 
-.popular {
+.popular p {
   padding-bottom: 8px;
+  color: var(--text);
 }
 
 .no-poster {
