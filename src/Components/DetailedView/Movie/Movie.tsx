@@ -42,7 +42,6 @@ const Movie = () => {
   }, [movieId]);
 
   const renderWatchProviders = (): string => {
-    // String will be an Error message
     if (typeof watchProviders === 'string') {
       return watchProviders;
     }
@@ -91,14 +90,18 @@ const Movie = () => {
             <span className={styles.released}> ({yearReleased})</span>
           </h2>
           <div className={styles.info}>
-            <span className={styles.genres}>
-              {'genres' in movieData &&
-                movieData.genres?.map(
-                  (item, i) => `${i ? ', ' : ''}${item.name}`
-                )}
-            </span>
-            <span>{time}</span>
-            <span>{renderWatchProviders()}</span>
+            {watchProviders && (
+              <>
+                <span className={styles.genres}>
+                  {'genres' in movieData &&
+                    movieData.genres?.map(
+                      (item, i) => `${i ? ', ' : ''}${item.name}`
+                    )}
+                </span>
+                <span>{time}</span>
+                <span>{renderWatchProviders()}</span>
+              </>
+            )}
           </div>
           <p className={styles.overview}>{movieData.overview}</p>
         </div>
