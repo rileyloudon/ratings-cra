@@ -15,6 +15,24 @@ export interface TvShow {
   original_name: string;
 }
 
+export interface DetailedTv extends TvShow {
+  number_of_seasons: number;
+  episode_run_time: number[];
+  genres: { id: number; name: string }[];
+  last_air_date: string;
+  seasons: {
+    air_date: string;
+    epside_count: number;
+    id: number;
+    name: string;
+    overview: string;
+    poster_path: string;
+    season_number: string;
+  }[];
+  status: string;
+  tagline: string;
+}
+
 export interface Movie {
   poster_path: string | null;
   adult: boolean;
@@ -22,7 +40,6 @@ export interface Movie {
   release_date: string;
   original_title: string;
   genre_ids: number[];
-  genres?: { id: number; name: string }[];
   id: number;
   media_type?: 'movie';
   original_language: string;
@@ -32,13 +49,17 @@ export interface Movie {
   vote_count: number;
   video: boolean;
   vote_average: number;
-  belongs_to_collection?: {
+}
+
+export interface DetailedMovie extends Movie {
+  genres: { id: number; name: string }[];
+  belongs_to_collection: {
     id: number;
     name: string;
     poster_path: string;
     backdrop_path: string;
   } | null;
-  runtime?: number;
+  runtime: number;
 }
 
 export interface Person {
