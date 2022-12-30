@@ -14,7 +14,7 @@
   align-items: center;
 }
 
-.search-item {
+.item {
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -26,19 +26,13 @@
   width: 300px;
 }
 
-p {
+.item p {
   display: flex;
   justify-content: center;
   margin: 0;
   padding: 16px 8px;
 }
 
-img {
+.item img {
   align-self: center;
-}
-
-.no-poster {
-  height: 200px;
-  border-bottom: 1px solid var(--border);
-  align-items: center;
 }
