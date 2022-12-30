@@ -1,21 +1,24 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Movie, Person, TvShow } from '../../interfaces';
+import {
+  ApiError,
+  SearchResultMovie,
+  SearchResultPerson,
+  SearchResultTv,
+} from '../../interfaces';
+import NoPoster from '../NoPoster/NoPoster';
 import Spinner from '../Spinner/Spinner';
 import fetchSearchResults from './fetchSearchResults';
 import styles from './SearchResults.module.css';
 
-interface ApiResponse {
-  // Success:
-  page?: number;
-  results?: (TvShow | Movie | Person)[];
-  total_pages?: number;
-  total_results?: number;
-
-  // Error:
-  status_message?: string;
-  status_code?: number;
+interface Results {
+  page: number;
+  results?: (SearchResultTv | SearchResultMovie | SearchResultPerson)[];
+  total_pages: number;
+  total_results: number;
 }
+
+type ApiResponse = Results | ApiError;
 
 const SearchResults = () => {
   const { title } = useParams();
@@ -34,7 +37,7 @@ const SearchResults = () => {
         </div>
       );
 
-    if (results.status_message) return <p>{results.status_message}</p>;
+    if ('status_message' in results) return <p>{results.status_message}</p>;
 
     // const totalPages = Math.ceil(
     //   parseInt(results.totalResults || '1', 10) / 10
@@ -43,62 +46,29 @@ const SearchResults = () => {
     return (
       <>
         {results.results?.map((item) => {
-          if ('profile_path' in item) {
-            return (
-              <Link
-                to={`/actor/${item.id}`}
-                key={item.id}
-                state={item}
-                className={styles['search-item']}
-              >
-                {item.profile_path !== null ? (
-                  <img
-                    src={`https://image.tmdb.org/t/p/w300/${item.profile_path}`}
-                    alt={`${item.name} Poster`}
-                  />
-                ) : (
-                  <p className={styles['no-poster']}>No Poster</p>
-                )}
-                <p>{item.name}</p>
-              </Link>
-            );
-          }
-          if ('title' in item) {
-            return (
-              <Link
-                to={`/movie/${item.id}`}
-                key={item.id}
-                state={item}
-                className={styles['search-item']}
-              >
-                {item.poster_path !== null ? (
-                  <img
-                    src={`https://image.tmdb.org/t/p/w300/${item.poster_path}`}
-                    alt={`${item.title} Poster`}
-                  />
-                ) : (
-                  <p className={styles['no-poster']}>No Poster</p>
-                )}
-                <p>{item.title}</p>
-              </Link>
-            );
-          }
+          const imgPath =
+            'profile_path' in item ? item.profile_path : item.poster_path;
+          const name = 'name' in item ? item.name : item.title;
+          let link = 'movie';
+          if (item.media_type === 'tv') link = 'tvshow';
+          else if (item.media_type === 'person') link = 'actor';
+
           return (
             <Link
-              to={`/tvshow/${item.id}`}
+              to={`/${link}/${item.id}`}
               key={item.id}
               state={item}
-              className={styles['search-item']}
+              className={styles.item}
             >
-              {item.poster_path !== null ? (
+              {imgPath !== null ? (
                 <img
-                  src={`https://image.tmdb.org/t/p/w300/${item.poster_path}`}
-                  alt={`${item.name} Poster`}
+                  src={`https://image.tmdb.org/t/p/w300/${imgPath}`}
+                  alt={`${name} Poster`}
                 />
               ) : (
-                <p className={styles['no-poster']}>No Poster</p>
+                <NoPoster />
               )}
-              <p>{item.name}</p>
+              <p>{name}</p>
             </Link>
           );
         })}
