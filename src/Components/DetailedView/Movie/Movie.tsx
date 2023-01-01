@@ -6,19 +6,12 @@ import {
   DetailedMovie,
 } from '../../../interfaces';
 import Graphs from './Graphs/Graphs';
+import NoPoster from '../../NoPoster/NoPoster';
 import Spinner from '../../Spinner/Spinner';
 import fetchMovieData from './fetchMovieData';
-import fetchWatchProviders from '../fetchWatchProviders';
 import styles from './Movie.module.css';
 
 type MovieData = DetailedMovie | MovieInterface | ApiError;
-
-interface StreamData {
-  link: string;
-  flatrate?: { logo_path: string; provider_name: string }[];
-}
-
-type WatchProviders = StreamData | string;
 
 const Movie = () => {
   const location = useLocation();
@@ -27,7 +20,6 @@ const Movie = () => {
   const [movieData, setMovieData] = useState<MovieData | null>(
     (location.state as MovieInterface) || null
   );
-  const [watchProviders, setWatchProviders] = useState<WatchProviders>('');
   const [error, setError] = useState<Error>();
 
   useEffect(() => {
@@ -35,19 +27,19 @@ const Movie = () => {
       window.scrollTo(0, 0);
       const data = await fetchMovieData(movieId);
       setMovieData(data);
-
-      const streamData = await fetchWatchProviders('movie', movieId);
-      setWatchProviders(streamData);
     })().catch((err: Error) => setError(err));
   }, [movieId]);
 
   const renderWatchProviders = (): string => {
-    if (typeof watchProviders === 'string') {
-      return watchProviders;
-    }
+    if (movieData && 'watch/providers' in movieData) {
+      const countryCode = Intl.DateTimeFormat()
+        .resolvedOptions()
+        .locale.slice(-2);
 
-    if (watchProviders?.flatrate)
-      return `Stream on ${watchProviders.flatrate[0].provider_name}`;
+      const watchProviders = movieData['watch/providers'].results[countryCode];
+      if (watchProviders?.flatrate)
+        return `Stream on ${watchProviders.flatrate[0].provider_name}`;
+    }
 
     return 'Unavailable to Stream';
   };
@@ -67,12 +59,12 @@ const Movie = () => {
 
     const yearReleased = movieData.release_date.slice(0, 4);
     const hours =
-      'runtime' in movieData && movieData.runtime
-        ? Math.trunc(movieData.runtime / 60)
-        : 0;
-    const minutes =
-      'runtime' in movieData && movieData.runtime ? movieData.runtime % 60 : 0;
-    const time = `${hours ? `${hours}h` : ''} ${minutes ? `${minutes}m` : ''}`;
+      'runtime' in movieData ? Math.trunc(movieData.runtime / 60) : 0;
+    const minutes = 'runtime' in movieData ? movieData.runtime % 60 : 0;
+    const time =
+      hours || minutes
+        ? `${hours ? `${hours}h` : ''} ${minutes ? `${minutes}m` : ''}`
+        : 'Unknown';
     return (
       <div className={styles.header}>
         {movieData.poster_path !== null ? (
@@ -82,7 +74,7 @@ const Movie = () => {
             alt=''
           />
         ) : (
-          <p className={styles['no-poster']}>No Poster</p>
+          <NoPoster />
         )}
         <div className={styles.text}>
           <h2 className={styles.title}>
@@ -90,18 +82,15 @@ const Movie = () => {
             <span className={styles.released}> ({yearReleased})</span>
           </h2>
           <div className={styles.info}>
-            {watchProviders && (
-              <>
-                <span className={styles.genres}>
-                  {'genres' in movieData &&
-                    movieData.genres?.map(
-                      (item, i) => `${i ? ', ' : ''}${item.name}`
-                    )}
-                </span>
-                <span>{time}</span>
-                <span>{renderWatchProviders()}</span>
-              </>
-            )}
+            <span className={styles.genres}>
+              {'genres' in movieData && movieData.genres.length
+                ? movieData.genres?.map(
+                    (item, i) => `${i ? ', ' : ''}${item.name}`
+                  )
+                : 'Unknown'}
+            </span>
+            <span> {time} </span>
+            <span>{renderWatchProviders()}</span>
           </div>
           <p className={styles.overview}>{movieData.overview}</p>
         </div>
