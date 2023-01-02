@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Movie, TvShow } from '../../../interfaces';
+import NoPoster from '../../NoPoster/NoPoster';
 import fetchPopular from './fetchPopular';
 import styles from './Popular.module.css';
 
@@ -17,41 +18,27 @@ const Popular = () => {
     if (typeof currentPopular === 'string') return <p>{currentPopular}</p>;
 
     return (
-      <div className={styles['popular-posters']}>
+      <div className={styles.posters}>
         {currentPopular?.map((item) => {
-          if ('name' in item)
-            return (
-              <Link
-                to={`/tvshow/${item.id}`}
-                key={item.id}
-                state={item}
-                className={styles['popular-item']}
-              >
-                {item.poster_path !== null ? (
-                  <img
-                    src={`https://image.tmdb.org/t/p/w200/${item.poster_path}`}
-                    alt={`${item.name} Poster`}
-                  />
-                ) : (
-                  <p className={styles['no-poster']}>No Poster</p>
-                )}
-              </Link>
-            );
+          const p =
+            'name' in item
+              ? { link: 'tvshow', name: item.name }
+              : { link: 'movie', name: item.title };
 
           return (
             <Link
-              to={`/movie/${item.id}`}
+              to={`/${p.link}/${item.id}`}
               key={item.id}
               state={item}
-              className={styles['popular-item']}
+              className={styles.item}
             >
               {item.poster_path !== null ? (
                 <img
                   src={`https://image.tmdb.org/t/p/w200/${item.poster_path}`}
-                  alt={`${item.title} Poster`}
+                  alt={`${p.name} Poster`}
                 />
               ) : (
-                <p className={styles['no-poster']}>No Poster</p>
+                <NoPoster />
               )}
             </Link>
           );
