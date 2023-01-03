@@ -4,22 +4,17 @@
   transform: translateY(-20%);
 }
 
-.popular-posters {
+.posters {
+  padding: 0 24px;
   display: flex;
   overflow: scroll;
 }
 
-.popular-item {
+.item {
   margin: 5px;
 }
 
 .popular p {
   padding-bottom: 8px;
   color: var(--text);
-}
-
-.no-poster {
-  height: 200px;
-  border-bottom: 1px solid var(--border);
-  align-items: center;
 }
