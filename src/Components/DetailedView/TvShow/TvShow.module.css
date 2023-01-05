@@ -1,0 +1,45 @@
+.container {
+  padding: 32px;
+  box-sizing: border-box;
+}
+
+.header {
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1000px;
+  padding-bottom: 16px;
+}
+
+.text {
+  padding: 16px;
+}
+
+.title {
+  margin-bottom: 0;
+}
+
+.title,
+.info,
+.overview {
+  color: var(--text);
+}
+
+.released {
+  font-weight: normal;
+}
+
+.info .genres::before {
+  content: '';
+  padding: 0px;
+}
+
+.info span::before {
+  content: '\2022';
+  padding: 8px;
+}
+
+.overview {
+  padding-left: 0;
+}
