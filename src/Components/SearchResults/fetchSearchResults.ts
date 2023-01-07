@@ -1,8 +1,13 @@
-import { ApiError, Movie, Person, TvShow } from '../../interfaces';
+import {
+  ApiError,
+  SearchResultMovie,
+  SearchResultPerson,
+  SearchResultTv,
+} from '../../interfaces';
 
 interface Results {
   page: number;
-  results: (TvShow | Movie | Person)[];
+  results?: (SearchResultTv | SearchResultMovie | SearchResultPerson)[];
   total_pages: number;
   total_results: number;
 }
