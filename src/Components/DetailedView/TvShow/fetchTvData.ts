@@ -12,7 +12,18 @@ const fetchTvData = async (tvId: string | undefined) => {
   );
   const tvData = (await response.json()) as TvData;
 
-  return tvData;
+  if ('status_message' in tvData) return tvData;
+
+  const now = Date.now();
+  const filteredSeasons = tvData.seasons.filter(
+    (a) => a.air_date !== null && new Date(a.air_date).getTime() < now
+  );
+
+  return {
+    ...tvData,
+    seasons: filteredSeasons,
+    number_of_seasons: filteredSeasons.length,
+  };
 };
 
 export default fetchTvData;
