@@ -1,5 +1,12 @@
-.name {
+.graph {
+  margin: auto;
+  max-width: 1000px;
+}
+
+.graph p {
+  text-align: center;
   color: var(--text);
+  padding: 5px 0;
 }
 
 .tooltip-wrapper {
