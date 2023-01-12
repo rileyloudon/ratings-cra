@@ -16,7 +16,10 @@ const fetchTvData = async (tvId: string | undefined) => {
 
   const now = Date.now();
   const filteredSeasons = tvData.seasons.filter(
-    (a) => a.air_date !== null && new Date(a.air_date).getTime() < now
+    (a) =>
+      a.air_date !== null &&
+      new Date(a.air_date).getTime() < now &&
+      a.season_number > 0
   );
 
   return {
