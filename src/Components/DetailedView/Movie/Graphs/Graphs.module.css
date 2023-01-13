@@ -1,0 +1,4 @@
+.collection p {
+  color: var(--text);
+  text-align: center;
+}
