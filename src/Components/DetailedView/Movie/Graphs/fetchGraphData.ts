@@ -1,4 +1,4 @@
-import { ApiError, Movie } from '../../../../../interfaces';
+import { ApiError, Movie } from '../../../../interfaces';
 
 interface Collection {
   id: number;
@@ -11,7 +11,7 @@ interface Collection {
 
 type CollectionData = Collection | ApiError;
 
-const fetchCollectionData = async (collectionId: number | undefined) => {
+const fetchGraphData = async (collectionId: number | undefined) => {
   const API_KEY: string = process.env.REACT_APP_API_KEY!;
 
   if (!collectionId)
@@ -31,4 +31,4 @@ const fetchCollectionData = async (collectionId: number | undefined) => {
   return { ...collectionData, parts: sortedParts };
 };
 
-export default fetchCollectionData;
+export default fetchGraphData;
