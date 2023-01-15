@@ -1,0 +1,12 @@
+.episodes {
+  text-align: center;
+}
+
+.episodes select {
+  border: 1px solid var(--border);
+  background-color: transparent;
+  color: var(--text);
+  font-size: 16px;
+  padding: 6px 22px 6px 12px;
+  margin: 8px;
+}
