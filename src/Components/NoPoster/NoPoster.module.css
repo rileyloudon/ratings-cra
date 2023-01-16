@@ -1,5 +1,10 @@
 .no-poster {
+  display: flex;
   height: 200px;
-  border-bottom: 1px solid var(--border);
+  width: 300px;
+  border: 1px solid var(--border);
   align-items: center;
+  justify-content: center;
+  color: var(--text);
+  box-sizing: border-box;
 }
