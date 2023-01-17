@@ -43,6 +43,9 @@ const SearchResults = () => {
     //   parseInt(results.totalResults || '1', 10) / 10
     // );
 
+    if (!results.results?.length)
+      return <p className={styles['no-results']}>No results found</p>;
+
     return (
       <>
         {results.results?.map((item) => {
