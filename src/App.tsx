@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './Components/Home/Home';
 import SearchResults from './Components/SearchResults/SearchResults';
@@ -22,6 +22,12 @@ const App = () => {
   const [currentSearch, setCurrentSearch] = useState<string>('');
   const updateCurrentSearch = (value: string): void => setCurrentSearch(value);
 
+  useEffect(() => {
+    const doc = document.querySelector('html') as HTMLHtmlElement;
+    doc.style.backgroundColor =
+      theme === 'dark' ? 'rgb(30, 30, 30)' : 'rgb(255, 255, 255)';
+  }, [theme]);
+
   return (
     <div className='App' data-theme={theme}>
       <BrowserRouter>
@@ -36,7 +42,7 @@ const App = () => {
               element={<Home updateCurrentSearch={updateCurrentSearch} />}
             />
             <Route path='search=:title' element={<SearchResults />} />
-            <Route path='tvshow/:tvShowId' element={<TvShow />} />
+            <Route path='tvshow/:tvId' element={<TvShow />} />
             <Route path='movie/:movieId' element={<Movie />} />
             <Route path='actor/:actorId' element={<Actor />} />
           </Routes>
