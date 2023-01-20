@@ -28,6 +28,15 @@ const Movie = () => {
     })().catch((err: Error) => setError(err));
   }, [actorId]);
 
+  const getAge = () => {
+    if ('birthday' in actorData) {
+      const ageDiff = Date.now() - new Date(actorData.birthday).getTime();
+      const date = new Date(ageDiff);
+      return `${Math.abs(date.getUTCFullYear() - 1970)} Years Old`;
+    }
+    return null;
+  };
+
   const renderActor = (): JSX.Element => {
     if (error) return <p>{error.message}</p>;
 
@@ -53,21 +62,13 @@ const Movie = () => {
           <NoPoster />
         )}
         <div className={styles.text}>
-          <h2 className={styles.title}>
-            {actorData.name}
-            {/* <span className={styles.released}> ({yearReleased})</span> */}
-          </h2>
-          {/* <div className={styles.info}>
-            <span className={styles.genres}>
-              {'genres' in actorData && actorData.genres.length
-                ? actorData.genres?.map(
-                    (item, i) => `${i ? ', ' : ''}${item.name}`
-                  )
-                : 'Unknown'}
-            </span>
-            <span> {time} </span>
-            <span>{renderWatchProviders()}</span>
-          </div> */}
+          <h2 className={styles.title}>{actorData.name}</h2>
+          <div className={styles.info}>
+            <span>{getAge()}</span>
+            {'combined_credits' in actorData && (
+              <span>{actorData.combined_credits.cast.length} Credits</span>
+            )}
+          </div>
           {'biography' in actorData && (
             <p className={styles.bio}>{actorData.biography}</p>
           )}
