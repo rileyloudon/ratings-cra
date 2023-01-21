@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { ApiError, Person, DetailedPerson } from '../../../interfaces';
-// import Graphs from './Graphs/Graphs';
+import Graphs from './Graphs/Graphs';
 import NoPoster from '../../NoPoster/NoPoster';
 import Spinner from '../../Spinner/Spinner';
 import fetchActorData from './fetchActorData';
@@ -62,7 +62,7 @@ const Movie = () => {
           <NoPoster />
         )}
         <div className={styles.text}>
-          <h2 className={styles.title}>{actorData.name}</h2>
+          <h2 className={styles.name}>{actorData.name}</h2>
           <div className={styles.info}>
             <span>{getAge()}</span>
             {'combined_credits' in actorData && (
@@ -77,15 +77,12 @@ const Movie = () => {
     );
   };
 
-  // Graphs:
-  // -display top 5 (?) credits, have an option to view next/previous 5
-
   return (
     <div className={styles.container}>
       <div>{renderActor()}</div>
-      {/* {actorData && 'belongs_to_collection' in actorData && (
-        <Graphs actorData={actorData} />
-      )} */}
+      {actorData && 'combined_credits' in actorData && (
+        <Graphs credits={actorData.combined_credits.cast} />
+      )}
     </div>
   );
 };
