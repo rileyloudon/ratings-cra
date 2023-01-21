@@ -1,0 +1,42 @@
+.container {
+  padding: 32px;
+  box-sizing: border-box;
+}
+
+.header {
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1000px;
+  padding-bottom: 16px;
+}
+
+.text {
+  padding: 16px;
+}
+
+.name {
+  margin-bottom: 0;
+}
+
+.name,
+.info,
+.bio {
+  color: var(--text);
+}
+
+.info span:first-of-type:before {
+  content: '';
+  padding: 0px;
+}
+
+.info span::before {
+  content: '\2022';
+  padding: 8px;
+}
+
+.bio {
+  white-space: pre-line;
+  padding-left: 0;
+}
