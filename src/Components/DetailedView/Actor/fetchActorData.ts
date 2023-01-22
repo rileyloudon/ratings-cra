@@ -14,11 +14,12 @@ const fetchActorData = async (actorId: string | undefined) => {
 
   if ('status_message' in actorData) return actorData;
 
-  const creditsByPopularity = actorData.combined_credits.cast.sort(
-    (a, b) => b.popularity - a.popularity
-  );
+  const ids = actorData.combined_credits.cast.map((credit) => credit.id);
+  const creditsByPopularity = actorData.combined_credits.cast
+    .filter((credit, i) => !ids.includes(credit.id, i + 1))
+    .sort((a, b) => b.popularity - a.popularity);
 
-  return { ...actorData, combined_credits: creditsByPopularity };
+  return { ...actorData, combined_credits: { cast: creditsByPopularity } };
 };
 
 export default fetchActorData;
