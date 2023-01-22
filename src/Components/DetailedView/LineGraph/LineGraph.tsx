@@ -41,7 +41,7 @@ const LineGraph = ({ data, xAxisLabel }: LineGraphProps) => {
             name='Average'
             dataKey='vote_average'
             stroke='var(--text)'
-            type='natural'
+            type='monotone'
           />
           <XAxis
             tick={{ fill: 'var(--text)' }}
