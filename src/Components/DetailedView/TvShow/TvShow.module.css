@@ -43,3 +43,11 @@
 .overview {
   padding-left: 0;
 }
+
+.loading {
+  text-align: center;
+}
+
+.loading p {
+  color: var(--text);
+}
