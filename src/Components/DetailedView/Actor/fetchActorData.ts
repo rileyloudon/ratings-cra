@@ -17,6 +17,10 @@ const fetchActorData = async (actorId: string | undefined) => {
   const ids = actorData.combined_credits.cast.map((credit) => credit.id);
   const creditsByPopularity = actorData.combined_credits.cast
     .filter((credit, i) => !ids.includes(credit.id, i + 1))
+    .map((credit) => ({
+      ...credit,
+      name: 'name' in credit ? credit.name : credit.title,
+    }))
     .sort((a, b) => b.popularity - a.popularity);
 
   return { ...actorData, combined_credits: { cast: creditsByPopularity } };
