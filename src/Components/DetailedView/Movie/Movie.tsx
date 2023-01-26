@@ -17,7 +17,7 @@ const Movie = () => {
   const location = useLocation();
   const { movieId } = useParams();
 
-  const [movieData, setMovieData] = useState<MovieData | null>(
+  const [movieData, setMovieData] = useState<MovieData>(
     (location.state as MovieInterface) || null
   );
   const [error, setError] = useState<Error>();
@@ -49,10 +49,10 @@ const Movie = () => {
 
     if (movieData === null)
       return (
-        <>
+        <div className={styles.loading}>
           <Spinner />
           <p>Getting Movie Details</p>
-        </>
+        </div>
       );
 
     if ('status_message' in movieData) return <p>{movieData.status_message}</p>;

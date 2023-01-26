@@ -6,10 +6,9 @@ import {
   TvShow as TvInterface,
 } from '../../../interfaces';
 import NoPoster from '../../NoPoster/NoPoster';
-// import Graphs from './Graphs/Graphs';
 import Spinner from '../../Spinner/Spinner';
-import fetchTvData from './fetchTvData';
 import Graphs from './Graphs/Graphs';
+import fetchTvData from './fetchTvData';
 import styles from './TvShow.module.css';
 
 type TvData = TvInterface | DetailedTv | ApiError;
@@ -18,7 +17,7 @@ const TvShow = () => {
   const location = useLocation();
   const { tvId } = useParams();
 
-  const [tvData, setTvData] = useState<TvData | null>(
+  const [tvData, setTvData] = useState<TvData>(
     (location.state as TvInterface) || null
   );
   const [error, setError] = useState<Error>();
@@ -50,10 +49,10 @@ const TvShow = () => {
 
     if (tvData === null)
       return (
-        <>
+        <div className={styles.loading}>
           <Spinner />
           <p>Getting Show Details</p>
-        </>
+        </div>
       );
 
     if ('status_message' in tvData) return <p>{tvData.status_message}</p>;

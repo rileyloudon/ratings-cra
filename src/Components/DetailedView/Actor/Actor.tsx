@@ -22,8 +22,6 @@ const Movie = () => {
     (async (): Promise<void> => {
       window.scrollTo(0, 0);
       const data = await fetchActorData(actorId);
-      console.log(data);
-
       setActorData(data);
     })().catch((err: Error) => setError(err));
   }, [actorId]);
@@ -42,10 +40,10 @@ const Movie = () => {
 
     if (actorData === null)
       return (
-        <>
+        <div className={styles.loading}>
           <Spinner />
           <p>Getting Actor Details</p>
-        </>
+        </div>
       );
 
     if ('status_message' in actorData) return <p>{actorData.status_message}</p>;
