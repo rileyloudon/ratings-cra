@@ -1,8 +1,10 @@
 .results {
   display: flex;
   align-items: center;
-  flex-direction: column;
+  justify-content: center;
+  /* flex-direction: column; */
   background-color: transparent;
+  flex-wrap: wrap;
 }
 
 .searching {
@@ -44,4 +46,26 @@
 
 .no-results {
   color: var(--text);
+}
+
+.page-selector {
+  display: flex;
+  justify-content: center;
+  margin: 50px 0 100px 0;
+}
+
+.page-selector button {
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: transparent;
+  margin: 0;
+  margin-left: 5px;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.page-selector button:disabled {
+  opacity: 33%;
+  cursor: not-allowed;
 }
