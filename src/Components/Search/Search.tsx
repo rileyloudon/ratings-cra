@@ -19,7 +19,7 @@ const Search = ({ currentSearch = '', updateCurrentSearch }: SearchProps) => {
     e.preventDefault();
     if (searchString.length >= 1) {
       updateCurrentSearch(searchString);
-      navigate(`/search=${searchString}`);
+      navigate(`/search=${searchString}/1`);
     }
   };
 
