@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import {
   CartesianGrid,
   Line,
@@ -7,20 +8,50 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+import { Movie, SearchResultMovie, SearchResultTv } from '../../../interfaces';
 import styles from './LineGraph.module.css';
 
 interface LineGraphProps {
   data: {
+    id: number;
     vote_average: number;
+    media_type?: 'person' | 'movie' | 'tv';
   }[];
   xAxisLabel: string;
+  allowClick?: boolean;
 }
 
-const LineGraph = ({ data, xAxisLabel }: LineGraphProps) => {
+interface ClickPayload {
+  activePayload?: {
+    payload: SearchResultMovie | SearchResultTv | Movie;
+  }[];
+}
+
+const LineGraph = ({
+  data,
+  xAxisLabel,
+  allowClick = false,
+}: LineGraphProps) => {
+  const navigate = useNavigate();
   const tickFormatter = (value: string): string => {
     const limit = 20;
     if (value.length < limit) return value;
     return `${value.substring(0, limit)}...`;
+  };
+
+  const handleClick = (e: ClickPayload) => {
+    if (e !== null && allowClick && e.activePayload) {
+      const { payload } = e.activePayload[0];
+
+      // media_type wont exist on Movie
+      // tv shows will always include media_type
+      const type =
+        'media_type' in payload && payload.media_type === 'tv'
+          ? 'tvshow'
+          : 'movie';
+
+      navigate(`/${type}/${payload.id}`);
+    }
   };
 
   return (
@@ -30,15 +61,17 @@ const LineGraph = ({ data, xAxisLabel }: LineGraphProps) => {
           // Key makes sure animation works
           key={Math.random()}
           data={data}
+          onClick={(e) => handleClick(e)}
+          style={allowClick && { cursor: 'pointer' }}
           margin={{
             top: 5,
-            right: 105,
-            left: 75,
+            right: 75,
+            left: 0,
             bottom: 50,
           }}
         >
           <Line
-            name='Average'
+            name='Rating'
             dataKey='vote_average'
             stroke='var(--text)'
             type='monotone'
@@ -59,7 +92,8 @@ const LineGraph = ({ data, xAxisLabel }: LineGraphProps) => {
           />
           <Tooltip
             wrapperClassName={styles['tooltip-wrapper']}
-            contentStyle={{ backgroundColor: 'var(background)' }}
+            contentStyle={{ backgroundColor: 'var(--background)' }}
+            cursor={{ stroke: 'var(--text', opacity: '75%' }}
           />
           <CartesianGrid strokeDasharray='2 1' opacity='50%' />
         </LineChart>
