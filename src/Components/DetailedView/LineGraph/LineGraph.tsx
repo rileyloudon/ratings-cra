@@ -8,7 +8,12 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { Movie, SearchResultMovie, SearchResultTv } from '../../../interfaces';
+import {
+  DetailedMovie,
+  Movie,
+  SearchResultMovie,
+  SearchResultTv,
+} from '../../../interfaces';
 import styles from './LineGraph.module.css';
 
 interface LineGraphProps {
@@ -19,6 +24,7 @@ interface LineGraphProps {
   }[];
   xAxisLabel: string;
   allowClick?: boolean;
+  highlightDot?: DetailedMovie;
 }
 
 interface ClickPayload {
@@ -27,10 +33,17 @@ interface ClickPayload {
   }[];
 }
 
+interface DotPayload {
+  payload: Movie;
+  cx: number;
+  cy: number;
+}
+
 const LineGraph = ({
   data,
   xAxisLabel,
   allowClick = false,
+  highlightDot,
 }: LineGraphProps) => {
   const navigate = useNavigate();
   const tickFormatter = (value: string): string => {
@@ -54,6 +67,19 @@ const LineGraph = ({
     }
   };
 
+  const customDot = (e: DotPayload): JSX.Element => (
+    <circle key={e.cx} cx={e.cx} cy={e.cy} r='3' fill='var(--text)'>
+      {highlightDot && e.payload.title === highlightDot?.title && (
+        <animate
+          attributeName='r'
+          values='3;7;3'
+          dur='2s'
+          repeatCount='indefinite'
+        />
+      )}
+    </circle>
+  );
+
   return (
     <div className={styles.graph}>
       <ResponsiveContainer width='100%' height={400}>
@@ -75,6 +101,7 @@ const LineGraph = ({
             dataKey='vote_average'
             stroke='var(--text)'
             type='monotone'
+            dot={(e: DotPayload) => customDot(e)}
           />
           <XAxis
             tick={{ fill: 'var(--text)' }}
