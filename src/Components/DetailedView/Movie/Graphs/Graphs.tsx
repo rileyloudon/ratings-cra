@@ -41,7 +41,12 @@ const Graphs = ({ movieData }: GraphsProps) => {
       <div className={styles.collection}>
         <p>{collectionData?.name}</p>
         {collectionData && 'parts' in collectionData && (
-          <LineGraph data={collectionData.parts} xAxisLabel='title' />
+          <LineGraph
+            data={collectionData.parts}
+            xAxisLabel='title'
+            highlightDot={movieData}
+            allowClick
+          />
         )}
       </div>
       {/* Other Graphs */}
