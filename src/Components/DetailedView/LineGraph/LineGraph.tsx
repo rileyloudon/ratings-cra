@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import {
   CartesianGrid,
+  Label,
   Line,
   LineChart,
   ResponsiveContainer,
@@ -22,6 +23,7 @@ interface LineGraphProps {
     vote_average: number;
     media_type?: 'person' | 'movie' | 'tv';
   }[];
+  xAxisDataKey: string;
   xAxisLabel: string;
   allowClick?: boolean;
   highlightDot?: DetailedMovie;
@@ -41,6 +43,7 @@ interface DotPayload {
 
 const LineGraph = ({
   data,
+  xAxisDataKey,
   xAxisLabel,
   allowClick = false,
   highlightDot,
@@ -56,7 +59,7 @@ const LineGraph = ({
     if (e !== null && allowClick && e.activePayload) {
       const { payload } = e.activePayload[0];
 
-      // media_type wont exist on Movie
+      // media_type wont exist on Movie, so default to that
       // tv shows will always include media_type
       const type =
         'media_type' in payload && payload.media_type === 'tv'
@@ -92,8 +95,8 @@ const LineGraph = ({
           margin={{
             top: 5,
             right: 75,
-            left: 0,
-            bottom: 50,
+            left: 10,
+            bottom: 75,
           }}
         >
           <Line
@@ -105,18 +108,32 @@ const LineGraph = ({
           />
           <XAxis
             tick={{ fill: 'var(--text)' }}
-            dataKey={xAxisLabel}
+            dataKey={xAxisDataKey}
             interval={0}
             tickFormatter={tickFormatter}
             angle={315}
-          />
+          >
+            <Label
+              value={xAxisLabel}
+              position='insideBottom'
+              offset={-60}
+              style={{ fill: 'var(--text)' }}
+            />
+          </XAxis>
           <YAxis
             tick={{ fill: 'var(--text)' }}
             type='number'
             domain={[0, 10]}
             tickCount={6}
             allowDataOverflow={false}
-          />
+          >
+            <Label
+              value='Rating'
+              position='insideLeft'
+              angle={-90}
+              style={{ fill: 'var(--text)' }}
+            />
+          </YAxis>
           <Tooltip
             wrapperClassName={styles['tooltip-wrapper']}
             contentStyle={{ backgroundColor: 'var(--background)' }}
