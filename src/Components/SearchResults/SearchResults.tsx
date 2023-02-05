@@ -103,7 +103,7 @@ const SearchResults = () => {
     })().catch((err: Error) => setError(err));
   }, [title, pageNumber]);
 
-  return renderSearchResults();
+  return <div className={styles.container}>{renderSearchResults()}</div>;
 };
 
 export default SearchResults;
