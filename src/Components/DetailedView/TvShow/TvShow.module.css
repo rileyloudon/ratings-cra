@@ -1,22 +1,31 @@
-.container {
-  padding: 32px;
-  box-sizing: border-box;
-}
-
 .header {
   margin: auto;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   max-width: 1000px;
+  width: 100vw;
+  padding-top: 32px;
   padding-bottom: 16px;
+  box-sizing: border-box;
 }
 
-.text {
-  padding: 16px;
+.top {
+  position: relative;
+}
+
+.poster {
+  width: 300px;
+}
+
+.backdrop {
+  align-self: flex-start;
+  width: 100%;
+  mask-image: linear-gradient(rgba(0, 0, 0, 1), transparent);
 }
 
 .title {
+  bottom: 0;
   margin-bottom: 0;
 }
 
@@ -24,6 +33,7 @@
 .info,
 .overview {
   color: var(--text);
+  padding: 0 18px;
 }
 
 .released {
@@ -40,14 +50,15 @@
   padding: 8px;
 }
 
-.overview {
-  padding-left: 0;
-}
-
 .loading {
   text-align: center;
 }
 
 .loading p {
   color: var(--text);
+}
+
+.error {
+  color: var(--text);
+  text-align: center;
 }

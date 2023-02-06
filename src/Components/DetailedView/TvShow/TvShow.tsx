@@ -45,7 +45,7 @@ const TvShow = () => {
   };
 
   const renderTvShow = (): JSX.Element => {
-    if (error) return <p>{error.message}</p>;
+    if (error) return <p className={styles.error}>{error.message}</p>;
 
     if (tvData === null)
       return (
@@ -55,26 +55,51 @@ const TvShow = () => {
         </div>
       );
 
-    if ('status_message' in tvData) return <p>{tvData.status_message}</p>;
+    if ('status_message' in tvData)
+      return <p className={styles.error}>{tvData.status_message}</p>;
 
     const yearStart = tvData.first_air_date.slice(0, 4);
     const seasons = 'number_of_seasons' in tvData && tvData.number_of_seasons;
     return (
       <div className={styles.header}>
-        {tvData.poster_path !== null ? (
+        {tvData.backdrop_path === null && tvData.poster_path !== null && (
           <img
             className={styles.poster}
-            src={`https://image.tmdb.org/t/p/w300/${tvData.poster_path}`}
+            src={`https://image.tmdb.org/t/p/w500/${tvData.poster_path}`}
             alt=''
           />
-        ) : (
+        )}
+        {tvData.backdrop_path === null && tvData.poster_path === null && (
           <NoPoster />
         )}
-        <div className={styles.text}>
-          <h2 className={styles.title}>
-            {tvData.name}
-            <span className={styles.released}> ({yearStart})</span>
-          </h2>
+        <div
+          className={styles.text}
+          style={
+            tvData.backdrop_path
+              ? { flexDirection: 'row' }
+              : { flexDirection: 'column', padding: '16px' }
+          }
+        >
+          {tvData.backdrop_path ? (
+            <div className={styles.top}>
+              <img
+                className={styles.backdrop}
+                src={`https://image.tmdb.org/t/p/w1280${
+                  tvData.backdrop_path || ''
+                }`}
+                alt=''
+              />
+              <h2 className={styles.title} style={{ position: 'absolute' }}>
+                {tvData.name}
+                <span className={styles.released}> ({yearStart})</span>
+              </h2>
+            </div>
+          ) : (
+            <h2 className={styles.title}>
+              {tvData.name}
+              <span className={styles.released}> ({yearStart})</span>
+            </h2>
+          )}
           <div className={styles.info}>
             <span className={styles.genres}>
               {'genres' in tvData && tvData.genres.length
@@ -94,10 +119,10 @@ const TvShow = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div>{renderTvShow()}</div>
+    <>
+      {renderTvShow()}
       {tvData && 'number_of_seasons' in tvData && <Graphs tvData={tvData} />}
-    </div>
+    </>
   );
 };
 
