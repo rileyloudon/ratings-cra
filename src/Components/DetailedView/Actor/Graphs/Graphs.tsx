@@ -8,8 +8,10 @@ interface GraphsProps {
 }
 
 const Graphs = ({ credits }: GraphsProps) => {
+  const creditsToDisplay = 10;
+
   const [displayedData, setDisplayedData] = useState<(Movie | TvShow)[]>(
-    credits.slice(0, 5)
+    credits.slice(0, creditsToDisplay)
   );
 
   const handlePrevClick = () => {
@@ -18,7 +20,12 @@ const Graphs = ({ credits }: GraphsProps) => {
     );
 
     setDisplayedData(
-      credits.slice(endingValue - 5 >= 0 ? endingValue - 5 : 0, endingValue)
+      credits.slice(
+        endingValue - creditsToDisplay >= 0
+          ? endingValue - creditsToDisplay
+          : 0,
+        endingValue
+      )
     );
   };
 
@@ -30,38 +37,42 @@ const Graphs = ({ credits }: GraphsProps) => {
     setDisplayedData(
       credits.slice(
         startingValue + 1,
-        startingValue + 6 <= credits.length ? startingValue + 6 : credits.length
+        startingValue + creditsToDisplay + 1 <= credits.length
+          ? startingValue + creditsToDisplay + 1
+          : credits.length
       )
     );
   };
 
   return (
-    <>
-      <div className={styles.credits}>
-        <p>Most Popular Credits</p>
-        <div className={styles.nav}>
-          <button
-            disabled={displayedData[0].id === credits[0].id}
-            type='button'
-            onClick={handlePrevClick}
-          >
-            Previous 5
-          </button>
-          <button
-            disabled={
-              displayedData[displayedData.length - 1].id ===
-              credits[credits.length - 1].id
-            }
-            type='button'
-            onClick={handleNextClick}
-          >
-            Next 5
-          </button>
-        </div>
-        <LineGraph data={displayedData} xAxisLabel='name' allowClick />
+    <div className={styles.credits}>
+      <p>Most Popular Credits</p>
+      <div className={styles.nav}>
+        <button
+          disabled={displayedData[0].id === credits[0].id}
+          type='button'
+          onClick={handlePrevClick}
+        >
+          Previous {creditsToDisplay}
+        </button>
+        <button
+          disabled={
+            displayedData[displayedData.length - 1].id ===
+            credits[credits.length - 1].id
+          }
+          type='button'
+          onClick={handleNextClick}
+        >
+          Next {creditsToDisplay}
+        </button>
       </div>
-      {/* Other Graphs */}
-    </>
+      <LineGraph
+        data={displayedData}
+        xAxisDataKey='name'
+        xAxisLabel='Credit Name'
+        allowClick
+      />
+    </div>
   );
 };
 export default Graphs;
