@@ -16,6 +16,7 @@ const Movie = () => {
   const [actorData, setActorData] = useState<ActorData>(
     (location.state as Person) || null
   );
+  const [showMoreBio, setShowMoreBio] = useState<boolean>(false);
   const [error, setError] = useState<Error>();
 
   useEffect(() => {
@@ -30,7 +31,34 @@ const Movie = () => {
     if ('birthday' in actorData) {
       const ageDiff = Date.now() - new Date(actorData.birthday).getTime();
       const date = new Date(ageDiff);
-      return `${Math.abs(date.getUTCFullYear() - 1970)} Years Old`;
+      return <span>{Math.abs(date.getUTCFullYear() - 1970)} Years Old</span>;
+    }
+    return null;
+  };
+
+  const getBio = () => {
+    if ('biography' in actorData) {
+      return (
+        <div className={styles.bio}>
+          {actorData.biography.length > 1250 ? (
+            <>
+              <p>
+                {showMoreBio
+                  ? actorData.biography
+                  : `${actorData.biography.substring(0, 1250)}...`}
+              </p>
+              <button
+                type='button'
+                onClick={() => setShowMoreBio(!showMoreBio)}
+              >
+                {showMoreBio ? 'Read Less' : 'Read More'}
+              </button>
+            </>
+          ) : (
+            <p>{actorData.biography}</p>
+          )}
+        </div>
+      );
     }
     return null;
   };
@@ -53,7 +81,7 @@ const Movie = () => {
         {actorData.profile_path !== null ? (
           <img
             className={styles.poster}
-            src={`https://image.tmdb.org/t/p/w300/${actorData.profile_path}`}
+            src={`https://image.tmdb.org/t/p/w500/${actorData.profile_path}`}
             alt=''
           />
         ) : (
@@ -62,26 +90,26 @@ const Movie = () => {
         <div className={styles.text}>
           <h2 className={styles.name}>{actorData.name}</h2>
           <div className={styles.info}>
-            <span>{getAge()}</span>
+            {getAge()}
             {'combined_credits' in actorData && (
               <span>{actorData.combined_credits.cast.length} Credits</span>
             )}
           </div>
-          {'biography' in actorData && (
-            <p className={styles.bio}>{actorData.biography}</p>
-          )}
+          {getBio()}
         </div>
       </div>
     );
   };
 
   return (
-    <div className={styles.container}>
-      <div>{renderActor()}</div>
-      {actorData && 'combined_credits' in actorData && (
-        <Graphs credits={actorData.combined_credits.cast} />
-      )}
-    </div>
+    <>
+      {renderActor()}
+      {actorData &&
+        'combined_credits' in actorData &&
+        actorData.combined_credits.cast.length && (
+          <Graphs credits={actorData.combined_credits.cast} />
+        )}
+    </>
   );
 };
 
