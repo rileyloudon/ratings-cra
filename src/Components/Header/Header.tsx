@@ -1,8 +1,4 @@
-import { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import ThemeContext from '../../Context/ThemeContext';
-import { ReactComponent as LightSvg } from '../../img/light-mode.svg';
-import { ReactComponent as DarkSvg } from '../../img/dark-mode.svg';
 import Search from '../Search/Search';
 import styles from './Header.module.css';
 
@@ -13,14 +9,6 @@ interface HeaderProps {
 
 const Header = ({ currentSearch, updateCurrentSearch }: HeaderProps) => {
   const location = useLocation();
-
-  const currentTheme = useContext(ThemeContext);
-
-  const handleTheme = () => {
-    const newTheme = currentTheme?.theme === 'light' ? 'dark' : 'light';
-    currentTheme?.setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-  };
 
   const displaySearch =
     /\/search=[A-Za-z0-9]+/i.test(location.pathname) ||
@@ -39,12 +27,6 @@ const Header = ({ currentSearch, updateCurrentSearch }: HeaderProps) => {
           updateCurrentSearch={updateCurrentSearch}
         />
       )}
-      <div className={styles['button-container']}>
-        <button type='button' className={styles.button} onClick={handleTheme}>
-          {currentTheme?.theme === 'light' ? <DarkSvg /> : <LightSvg />}
-          Toggle Theme
-        </button>
-      </div>
     </header>
   );
 };
