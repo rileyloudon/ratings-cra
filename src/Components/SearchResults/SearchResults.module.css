@@ -72,3 +72,8 @@
   opacity: 33%;
   cursor: not-allowed;
 }
+
+.error {
+  text-align: center;
+  color: var(--text);
+}

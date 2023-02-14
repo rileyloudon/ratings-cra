@@ -27,8 +27,16 @@ const SearchResults = () => {
   const [results, setResults] = useState<ApiResponse>();
   const [error, setError] = useState<Error>();
 
+  useEffect(() => {
+    (async (): Promise<void> => {
+      window.scrollTo(0, 0);
+      const data = await fetchSearchResults(title, pageNumber);
+      setResults(data);
+    })().catch((err: Error) => setError(err));
+  }, [title, pageNumber]);
+
   const renderSearchResults = (): JSX.Element => {
-    if (error) return <p>{error.message}</p>;
+    if (error) return <p className={styles.error}>{error.message}</p>;
 
     if (!results)
       return (
@@ -38,7 +46,8 @@ const SearchResults = () => {
         </div>
       );
 
-    if ('status_message' in results) return <p>{results.status_message}</p>;
+    if ('status_message' in results)
+      return <p className={styles.error}>{results.status_message}</p>;
 
     if (!results.results?.length || !title)
       return <p className={styles['no-results']}>No results found</p>;
@@ -94,14 +103,6 @@ const SearchResults = () => {
       </>
     );
   };
-
-  useEffect(() => {
-    (async (): Promise<void> => {
-      window.scrollTo(0, 0);
-      const data = await fetchSearchResults(title, pageNumber);
-      setResults(data);
-    })().catch((err: Error) => setError(err));
-  }, [title, pageNumber]);
 
   return <div className={styles.container}>{renderSearchResults()}</div>;
 };

@@ -64,7 +64,7 @@ const Movie = () => {
   };
 
   const renderActor = (): JSX.Element => {
-    if (error) return <p>{error.message}</p>;
+    if (error) return <p className={styles.error}>{error.message}</p>;
 
     if (actorData === null)
       return (
@@ -74,7 +74,8 @@ const Movie = () => {
         </div>
       );
 
-    if ('status_message' in actorData) return <p>{actorData.status_message}</p>;
+    if ('status_message' in actorData)
+      return <p className={styles.error}>{actorData.status_message}</p>;
 
     return (
       <div className={styles.header}>

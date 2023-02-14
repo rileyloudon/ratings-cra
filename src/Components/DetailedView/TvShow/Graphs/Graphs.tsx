@@ -79,9 +79,11 @@ const Graphs = ({ tvData }: GraphsProps) => {
     }
   };
 
-  if (error) return <p>{error.message}</p>;
+  if (error) return <p className={styles.error}>{error.message}</p>;
   if (seasonData && 'status_message' in seasonData)
-    return <p>{seasonData.status_message.toString()}</p>;
+    return (
+      <p className={styles.error}>{seasonData.status_message.toString()}</p>
+    );
 
   const seasonOptions = Array.from(
     { length: tvData.number_of_seasons },

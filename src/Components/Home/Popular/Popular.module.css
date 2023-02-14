@@ -14,7 +14,17 @@
   margin: 5px;
 }
 
+.item img {
+  width: 250px;
+}
+
 .popular p {
   padding-bottom: 8px;
+  color: var(--text);
+  font-size: 18px;
+}
+
+.error {
+  text-align: center;
   color: var(--text);
 }

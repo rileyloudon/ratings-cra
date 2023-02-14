@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
+  ApiError,
   SearchResultMovie,
   SearchResultPerson,
   SearchResultTv,
@@ -11,17 +12,24 @@ import styles from './Popular.module.css';
 
 type CurrentPopular =
   | (SearchResultTv | SearchResultMovie | SearchResultPerson)[]
-  | string;
+  | ApiError;
 
 const Popular = () => {
   const [currentPopular, setCurrentPopular] = useState<CurrentPopular>();
   const [error, setError] = useState<Error>();
 
-  const renderPopular = (): JSX.Element => {
-    if (error) return <p>{error.message}</p>;
+  useEffect(() => {
+    (async (): Promise<void> => {
+      const res = await fetchPopular();
+      setCurrentPopular(res);
+    })().catch((err: Error) => setError(err));
+  }, []);
 
-    // Error returned by TMDB
-    if (typeof currentPopular === 'string') return <p>{currentPopular}</p>;
+  const renderPopular = (): JSX.Element => {
+    if (error) return <p className={styles.error}>{error.message}</p>;
+
+    if (currentPopular && 'status_message' in currentPopular)
+      return <p className={styles.error}>{currentPopular.status_message}</p>;
 
     return (
       <div className={styles.posters}>
@@ -56,13 +64,6 @@ const Popular = () => {
       </div>
     );
   };
-
-  useEffect(() => {
-    (async (): Promise<void> => {
-      const res = await fetchPopular();
-      setCurrentPopular(res);
-    })().catch((err: Error) => setError(err));
-  }, []);
 
   return currentPopular || error ? (
     <div className={styles.popular}>
