@@ -2,11 +2,17 @@
   padding: 8px;
   display: flex;
   align-items: center;
+  height: 49px;
+  box-sizing: border-box;
+}
+
+.container form {
+  margin: auto;
 }
 
 .title {
   margin: 0;
-  flex: 1;
+  position: absolute;
 }
 
 .title a {
@@ -15,25 +21,9 @@
   text-decoration: none;
 }
 
-.button-container {
-  display: flex;
-  flex: 1;
-  justify-content: flex-end;
-}
-
-.button {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  font-size: 14px;
-  padding: 6px 12px;
-  background-color: transparent;
-  color: var(--text);
-  border: 1px solid var(--border);
-  cursor: pointer;
-}
-
-.button svg {
-  fill: var(--text);
-  margin-right: 6px;
+@media (max-width: 735px) {
+  .title {
+    position: initial;
+    padding-right: 6px;
+  }
 }
