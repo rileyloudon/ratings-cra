@@ -17,14 +17,18 @@ const Movie = () => {
     (location.state as Person) || null
   );
   const [showMoreBio, setShowMoreBio] = useState<boolean>(false);
-  const [error, setError] = useState<Error>();
+  const [error, setError] = useState<Error | false>(false);
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     (async (): Promise<void> => {
       window.scrollTo(0, 0);
-      const data = await fetchActorData(actorId);
+      const data = await fetchActorData(actorId, abortController.signal);
+      setError(false);
       setActorData(data);
     })().catch((err: Error) => setError(err));
+    return () => abortController.abort();
   }, [actorId]);
 
   const getAge = () => {

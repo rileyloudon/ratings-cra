@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {
   ApiError,
   Movie as MovieInterface,
@@ -14,21 +14,22 @@ import styles from './Movie.module.css';
 type MovieData = DetailedMovie | MovieInterface | ApiError;
 
 const Movie = () => {
-  const location = useLocation();
   const { movieId } = useParams();
 
-  const [movieData, setMovieData] = useState<MovieData>(
-    (location.state as MovieInterface) || null
-  );
-  const [error, setError] = useState<Error>();
+  const [movieData, setMovieData] = useState<MovieData | null>(null);
+  const [error, setError] = useState<Error | false>(false);
 
   useEffect(() => {
+    const abortController = new AbortController();
+    setMovieData(null);
+
     (async (): Promise<void> => {
       window.scrollTo(0, 0);
-      const data = await fetchMovieData(movieId);
+      const data = await fetchMovieData(movieId, abortController.signal);
+      setError(false);
       setMovieData(data);
-      console.log(data);
     })().catch((err: Error) => setError(err));
+    return () => abortController.abort();
   }, [movieId]);
 
   const renderWatchProviders = (): string => {

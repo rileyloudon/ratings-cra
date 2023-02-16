@@ -2,7 +2,11 @@ import { Season, ApiError } from '../../../../interfaces';
 
 type SeasonData = Season | ApiError;
 
-const fetchGraphData = async (tvId: number, seasons: number) => {
+const fetchGraphData = async (
+  tvId: number,
+  seasons: number,
+  signal: AbortSignal
+) => {
   const API_KEY: string = process.env.REACT_APP_API_KEY!;
 
   if (!tvId || !seasons)
@@ -24,7 +28,8 @@ const fetchGraphData = async (tvId: number, seasons: number) => {
   for (let i = 0; i < appendStringArray.length; i += 1) {
     promises.push(
       fetch(
-        `https://api.themoviedb.org/3/tv/${tvId}?api_key=${API_KEY}&append_to_response=${appendStringArray[i]}`
+        `https://api.themoviedb.org/3/tv/${tvId}?api_key=${API_KEY}&append_to_response=${appendStringArray[i]}`,
+        { signal }
       )
     );
   }

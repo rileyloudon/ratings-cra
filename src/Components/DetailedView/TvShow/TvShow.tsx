@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {
   ApiError,
   DetailedTv,
@@ -14,20 +14,21 @@ import styles from './TvShow.module.css';
 type TvData = TvInterface | DetailedTv | ApiError;
 
 const TvShow = () => {
-  const location = useLocation();
   const { tvId } = useParams();
 
-  const [tvData, setTvData] = useState<TvData>(
-    (location.state as TvInterface) || null
-  );
-  const [error, setError] = useState<Error>();
+  const [tvData, setTvData] = useState<TvData | null>(null);
+  const [error, setError] = useState<Error | false>(false);
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     (async (): Promise<void> => {
       window.scrollTo(0, 0);
-      const data = await fetchTvData(tvId);
+      const data = await fetchTvData(tvId, abortController.signal);
+      setError(false);
       setTvData(data);
     })().catch((err: Error) => setError(err));
+    return () => abortController.abort();
   }, [tvId]);
 
   const renderWatchProviders = (): string => {

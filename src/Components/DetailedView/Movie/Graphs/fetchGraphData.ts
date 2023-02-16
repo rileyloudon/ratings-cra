@@ -11,14 +11,18 @@ interface Collection {
 
 type CollectionData = Collection | ApiError;
 
-const fetchGraphData = async (collectionId: number | undefined) => {
+const fetchGraphData = async (
+  collectionId: number | undefined,
+  signal: AbortSignal
+) => {
   const API_KEY: string = process.env.REACT_APP_API_KEY!;
 
   if (!collectionId)
     return { status_code: 0, status_message: 'No CollectionID found' };
 
   const response = await fetch(
-    `https://api.themoviedb.org/3/collection/${collectionId}?api_key=${API_KEY}&language=en-US`
+    `https://api.themoviedb.org/3/collection/${collectionId}?api_key=${API_KEY}&language=en-US`,
+    { signal }
   );
   const collectionData = (await response.json()) as CollectionData;
   if ('status_message' in collectionData) return collectionData;

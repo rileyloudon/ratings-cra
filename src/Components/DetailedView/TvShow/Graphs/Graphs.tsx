@@ -16,15 +16,23 @@ const Graphs = ({ tvData }: GraphsProps) => {
   const [seasonData, setSeasonData] = useState<SeasonData>();
   const [seasonSelector, setSeasonSelector] = useState<string>('season/1');
   const [displayedData, setDisplayedData] = useState<Episodes[]>();
-  const [error, setError] = useState<Error>();
+  const [error, setError] = useState<Error | false>(false);
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     (async (): Promise<void> => {
       if ('number_of_seasons' in tvData) {
-        const data = await fetchGraphData(tvData.id, tvData.number_of_seasons);
+        const data = await fetchGraphData(
+          tvData.id,
+          tvData.number_of_seasons,
+          abortController.signal
+        );
+        setError(false);
         setSeasonData(data);
       }
     })().catch((err: Error) => setError(err));
+    return () => abortController.abort();
   }, [tvData]);
 
   useEffect(() => {

@@ -21,36 +21,42 @@ type CollectionData = Collection | ApiError;
 
 const Graphs = ({ movieData }: GraphsProps) => {
   const [collectionData, setCollectionData] = useState<CollectionData>();
-  const [error, setError] = useState<Error>();
+  const [fetchComplete, setFetchComplete] = useState<boolean>(false);
+  const [error, setError] = useState<Error | false>(false);
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     (async (): Promise<void> => {
       if (!collectionData && movieData.belongs_to_collection !== null) {
-        const data = await fetchGraphData(movieData.belongs_to_collection.id);
+        const data = await fetchGraphData(
+          movieData.belongs_to_collection.id,
+          abortController.signal
+        );
+
+        setError(false);
         setCollectionData(data);
       }
+      setFetchComplete(true);
     })().catch((err: Error) => setError(err));
+    return () => abortController.abort();
   }, [movieData.belongs_to_collection, collectionData]);
 
-  if (error) return <p>{error.message}</p>;
+  if (error) return <p className={styles.error}>{error.message}</p>;
   if (collectionData && 'status_message' in collectionData)
-    return <p>{collectionData.status_message}</p>;
+    return <p className={styles.error}>{collectionData.status_message}</p>;
 
-  return (
-    <>
-      <div className={styles.collection}>
-        <p>{collectionData?.name}</p>
-        {collectionData && 'parts' in collectionData && (
-          <LineGraph
-            data={collectionData.parts}
-            xAxisLabel='title'
-            highlightDot={movieData}
-            allowClick
-          />
-        )}
-      </div>
-      {/* Other Graphs */}
-    </>
-  );
+  return fetchComplete ? (
+    <div className={styles.collection}>
+      <p>{collectionData?.name || 'Standalone Movie'}</p>
+      <LineGraph
+        data={collectionData?.parts || [movieData]}
+        xAxisDataKey='title'
+        xAxisLabel='Movie Title'
+        highlightDot={movieData}
+        allowClick={!!collectionData}
+      />
+    </div>
+  ) : null;
 };
 export default Graphs;

@@ -25,14 +25,22 @@ const SearchResults = () => {
   const { title, pageNumber } = useParams();
 
   const [results, setResults] = useState<ApiResponse>();
-  const [error, setError] = useState<Error>();
+  const [error, setError] = useState<Error | false>(false);
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     (async (): Promise<void> => {
       window.scrollTo(0, 0);
-      const data = await fetchSearchResults(title, pageNumber);
+      const data = await fetchSearchResults(
+        title,
+        pageNumber,
+        abortController.signal
+      );
+      setError(false);
       setResults(data);
     })().catch((err: Error) => setError(err));
+    return () => abortController.abort();
   }, [title, pageNumber]);
 
   const renderSearchResults = (): JSX.Element => {

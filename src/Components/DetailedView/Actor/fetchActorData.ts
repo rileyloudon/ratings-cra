@@ -2,13 +2,17 @@ import { ApiError, DetailedPerson } from '../../../interfaces';
 
 type ActorData = DetailedPerson | ApiError;
 
-const fetchActorData = async (actorId: string | undefined) => {
+const fetchActorData = async (
+  actorId: string | undefined,
+  signal: AbortSignal
+) => {
   const API_KEY: string = process.env.REACT_APP_API_KEY!;
 
   if (!actorId) return { status_code: 0, status_message: 'No actorID found' };
 
   const response = await fetch(
-    `https://api.themoviedb.org/3/person/${actorId}?api_key=${API_KEY}&language=en-US&append_to_response=combined_credits`
+    `https://api.themoviedb.org/3/person/${actorId}?api_key=${API_KEY}&language=en-US&append_to_response=combined_credits`,
+    { signal }
   );
   const actorData = (await response.json()) as ActorData;
 

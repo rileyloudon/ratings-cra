@@ -16,13 +16,17 @@ type CurrentPopular =
 
 const Popular = () => {
   const [currentPopular, setCurrentPopular] = useState<CurrentPopular>();
-  const [error, setError] = useState<Error>();
+  const [error, setError] = useState<Error | false>(false);
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     (async (): Promise<void> => {
-      const res = await fetchPopular();
+      const res = await fetchPopular(abortController.signal);
+      setError(false);
       setCurrentPopular(res);
     })().catch((err: Error) => setError(err));
+    return () => abortController.abort();
   }, []);
 
   const renderPopular = (): JSX.Element => {
