@@ -28,3 +28,20 @@
   text-align: center;
   color: var(--text);
 }
+
+@media (max-width: 735px) {
+  .popular {
+    top: 10%;
+    transform: translateY(-10%);
+  }
+
+  .item img {
+    width: 225px;
+  }
+}
+
+@media (max-width: 375px) {
+  .item img {
+    width: 175px;
+  }
+}

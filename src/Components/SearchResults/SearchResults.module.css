@@ -45,6 +45,7 @@
 
 .item img {
   align-self: center;
+  width: 100%;
 }
 
 .no-results {
@@ -76,4 +77,10 @@
 .error {
   text-align: center;
   color: var(--text);
+}
+
+@media (max-width: 735px) {
+  .item {
+    width: 225px;
+  }
 }

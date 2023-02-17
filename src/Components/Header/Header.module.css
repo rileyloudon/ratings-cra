@@ -1,8 +1,8 @@
 .container {
-  padding: 8px;
+  padding: 16px 8px;
   display: flex;
   align-items: center;
-  height: 49px;
+  height: 64px;
   box-sizing: border-box;
 }
 
@@ -11,6 +11,7 @@
 }
 
 .title {
+  padding-left: 16px;
   margin: 0;
   position: absolute;
 }
@@ -22,8 +23,17 @@
 }
 
 @media (max-width: 735px) {
+  .container {
+    margin-right: 8px;
+  }
+
   .title {
     position: initial;
-    padding-right: 6px;
+    padding-right: 16px;
+    padding-left: 8px;
+  }
+
+  .container form input {
+    width: 100%;
   }
 }
