@@ -18,6 +18,8 @@ const Search = ({ currentSearch = '', updateCurrentSearch }: SearchProps) => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (searchString.trim().length >= 1) {
+      const input = document.querySelector('input');
+      if (input) input.blur();
       // turns any non-alphanumeric characters into spaces
       const filteredSearchString = searchString.replace(/[\W_]+/g, ' ').trim();
 
@@ -32,7 +34,9 @@ const Search = ({ currentSearch = '', updateCurrentSearch }: SearchProps) => {
     <form className={styles.form} onSubmit={handleSubmit}>
       <input
         type='search'
+        inputMode='search'
         placeholder='Search'
+        autoCorrect='off'
         value={searchString}
         onChange={(e) => setSearchString(e.target.value)}
         onFocus={handleFocus}
