@@ -2,10 +2,9 @@
   margin: auto;
   display: flex;
   justify-content: center;
-  align-items: center;
   max-width: 1000px;
   width: 100vw;
-  padding-top: 32px;
+  padding-top: 8px;
   padding-bottom: 16px;
   box-sizing: border-box;
 }
@@ -16,6 +15,7 @@
 
 .poster {
   width: 300px;
+  align-self: center;
 }
 
 .backdrop {
@@ -26,18 +26,23 @@
 
 .title {
   bottom: 0;
-  margin-bottom: 0;
+  margin: 0;
+}
+
+.released {
+  font-weight: normal;
 }
 
 .title,
 .info,
 .overview {
   color: var(--text);
-  padding: 0 18px;
+  margin: 0 16px;
 }
 
-.released {
-  font-weight: normal;
+.overview {
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 
 .info .genres::before {
@@ -46,7 +51,7 @@
 }
 
 .info span::before {
-  content: '\2022';
+  content: '\25E6';
   padding: 8px;
 }
 
@@ -61,4 +66,24 @@
 .error {
   color: var(--text);
   text-align: center;
+}
+
+@media (max-width: 735px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .title {
+    margin-top: 8px;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .info .genres::before {
+    content: '\25E6';
+    padding: 8px;
+  }
 }

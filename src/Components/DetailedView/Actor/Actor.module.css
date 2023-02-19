@@ -1,20 +1,21 @@
 .header {
   margin: auto;
   display: flex;
-  align-items: flex-start;
   justify-content: center;
+  width: 100vw;
   max-width: 1000px;
-  padding: 32px;
+  padding-top: 8px;
   padding-bottom: 16px;
+  box-sizing: border-box;
 }
 
 .poster {
   width: 300px;
+  align-self: center;
 }
 
 .text {
   padding: 0 16px;
-  min-width: 450px;
 }
 
 .name {
@@ -33,7 +34,7 @@
 }
 
 .info span::before {
-  content: '\2022';
+  content: '\25E6';
   padding: 8px;
 }
 
@@ -70,4 +71,24 @@
 .error {
   text-align: center;
   color: var(--text);
+}
+
+@media (max-width: 735px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .name {
+    margin-top: 8px;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .info span:first-of-type:before {
+    content: '\25E6';
+    padding: 8px;
+  }
 }
