@@ -114,9 +114,9 @@ const Movie = () => {
                 ? movieData.genres?.map(
                     (item, i) => `${i ? ', ' : ''}${item.name}`
                   )
-                : 'Unknown'}
+                : 'Unknown'}{' '}
             </span>
-            <span> {time} </span>
+            <span>{time} </span>
             <span>{renderWatchProviders()}</span>
           </div>
           <p className={styles.overview}>{movieData.overview}</p>

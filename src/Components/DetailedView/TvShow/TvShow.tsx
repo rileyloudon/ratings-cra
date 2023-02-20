@@ -78,7 +78,7 @@ const TvShow = () => {
           style={
             tvData.backdrop_path
               ? { flexDirection: 'row' }
-              : { flexDirection: 'column', padding: '16px' }
+              : { flexDirection: 'column' }
           }
         >
           {tvData.backdrop_path ? (
@@ -105,10 +105,9 @@ const TvShow = () => {
             <span className={styles.genres}>
               {'genres' in tvData && tvData.genres.length
                 ? tvData.genres.map((item, i) => `${i ? ', ' : ''}${item.name}`)
-                : 'Unknown'}
+                : 'Unknown'}{' '}
             </span>
             <span>
-              {' '}
               {seasons} {seasons === 1 ? 'Season' : 'Seasons'}{' '}
             </span>
             <span>{renderWatchProviders()}</span>
