@@ -8,7 +8,7 @@ const fetchTvData = async (tvId: string | undefined, signal: AbortSignal) => {
   if (!tvId) return { status_code: 0, status_message: 'No tvID found' };
 
   const response = await fetch(
-    `https://api.themoviedb.org/3/tv/${tvId}?api_key=${API_KEY}&language=en-US&append_to_response=watch/providers`,
+    `https://api.themoviedb.org/3/tv/${tvId}?api_key=${API_KEY}&language=en-US&append_to_response=watch/providers,credits`,
     { signal }
   );
   const tvData = (await response.json()) as TvData;
