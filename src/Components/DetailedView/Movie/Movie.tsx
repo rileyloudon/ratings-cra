@@ -8,6 +8,7 @@ import {
 import Graphs from './Graphs/Graphs';
 import NoPoster from '../../NoPoster/NoPoster';
 import Spinner from '../../Spinner/Spinner';
+import CastCard from '../CastCard/CastCard';
 import fetchMovieData from './fetchMovieData';
 import styles from './Movie.module.css';
 
@@ -85,16 +86,14 @@ const Movie = () => {
           style={
             movieData.backdrop_path
               ? { flexDirection: 'row' }
-              : { flexDirection: 'column', padding: '16px' }
+              : { flexDirection: 'column' }
           }
         >
           {movieData.backdrop_path ? (
             <div className={styles.top}>
               <img
                 className={styles.backdrop}
-                src={`https://image.tmdb.org/t/p/w1280${
-                  movieData.backdrop_path || ''
-                }`}
+                src={`https://image.tmdb.org/t/p/w1280${movieData.backdrop_path}`}
                 alt=''
               />
               <h2 className={styles.title} style={{ position: 'absolute' }}>
@@ -119,6 +118,9 @@ const Movie = () => {
             <span>{time} </span>
             <span>{renderWatchProviders()}</span>
           </div>
+          {'credits' in movieData && movieData.credits.cast.length && (
+            <CastCard cast={movieData.credits.cast} />
+          )}
           <p className={styles.overview}>{movieData.overview}</p>
         </div>
       </div>

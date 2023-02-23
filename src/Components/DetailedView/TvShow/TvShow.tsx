@@ -10,6 +10,7 @@ import Spinner from '../../Spinner/Spinner';
 import Graphs from './Graphs/Graphs';
 import fetchTvData from './fetchTvData';
 import styles from './TvShow.module.css';
+import CastCard from '../CastCard/CastCard';
 
 type TvData = TvInterface | DetailedTv | ApiError;
 
@@ -85,9 +86,7 @@ const TvShow = () => {
             <div className={styles.top}>
               <img
                 className={styles.backdrop}
-                src={`https://image.tmdb.org/t/p/w1280${
-                  tvData.backdrop_path || ''
-                }`}
+                src={`https://image.tmdb.org/t/p/w1280${tvData.backdrop_path}`}
                 alt=''
               />
               <h2 className={styles.title} style={{ position: 'absolute' }}>
@@ -112,6 +111,9 @@ const TvShow = () => {
             </span>
             <span>{renderWatchProviders()}</span>
           </div>
+          {'credits' in tvData && tvData.credits.cast.length && (
+            <CastCard cast={tvData.credits.cast} />
+          )}
           <p className={styles.overview}>{tvData.overview}</p>
         </div>
       </div>
