@@ -82,11 +82,10 @@ const Movie = () => {
           <NoPoster />
         )}
         <div
-          className={styles.text}
-          style={
+          className={
             movieData.backdrop_path
-              ? { flexDirection: 'row' }
-              : { flexDirection: 'column' }
+              ? styles['backdrop-container']
+              : styles['poster-container']
           }
         >
           {movieData.backdrop_path ? (
@@ -96,7 +95,7 @@ const Movie = () => {
                 src={`https://image.tmdb.org/t/p/w1280${movieData.backdrop_path}`}
                 alt=''
               />
-              <h2 className={styles.title} style={{ position: 'absolute' }}>
+              <h2 className={styles.title}>
                 {movieData.title}
                 <span className={styles.released}> ({yearReleased})</span>
               </h2>

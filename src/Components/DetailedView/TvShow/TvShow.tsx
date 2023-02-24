@@ -75,11 +75,10 @@ const TvShow = () => {
           <NoPoster />
         )}
         <div
-          className={styles.text}
-          style={
+          className={
             tvData.backdrop_path
-              ? { flexDirection: 'row' }
-              : { flexDirection: 'column' }
+              ? styles['backdrop-container']
+              : styles['poster-container']
           }
         >
           {tvData.backdrop_path ? (
@@ -89,7 +88,7 @@ const TvShow = () => {
                 src={`https://image.tmdb.org/t/p/w1280${tvData.backdrop_path}`}
                 alt=''
               />
-              <h2 className={styles.title} style={{ position: 'absolute' }}>
+              <h2 className={styles.title}>
                 {tvData.name}
                 <span className={styles.released}> ({yearStart})</span>
               </h2>
