@@ -144,6 +144,7 @@ export interface Credit {
   character: string;
   name: string;
   id: number;
+  profile_path: string;
 }
 
 export interface ApiError {
