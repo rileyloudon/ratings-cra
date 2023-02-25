@@ -1,17 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato');
 
 :root {
-  --background: rgb(255, 255, 255);
-  --off-background: rgb(250, 250, 250);
-  --border: rgb(219, 219, 219);
-  --text: rgb(38, 38, 38);
-}
-
-[data-theme='dark'] {
   --background: rgb(22, 22, 22);
-  --off-background: rgb(18, 18, 18);
   --border: rgb(82, 80, 79);
   --text: rgb(255, 255, 255);
+  --blue: #54bbfb;
 }
 
 body {
