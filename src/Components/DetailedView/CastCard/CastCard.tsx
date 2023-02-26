@@ -8,7 +8,7 @@ const CastCard = ({ cast }: { cast: Credit[] }) => (
       person.profile_path !== null ? (
         <Link
           to={`/actor/${person.id}`}
-          key={person.id}
+          key={person.id.toString() + person.character}
           className={styles.card}
         >
           <img
