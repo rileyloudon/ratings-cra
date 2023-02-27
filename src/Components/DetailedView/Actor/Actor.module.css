@@ -11,7 +11,7 @@
 
 .poster {
   width: 300px;
-  align-self: center;
+  align-self: flex-start;
 }
 
 .text {
@@ -57,7 +57,7 @@
   background-color: transparent;
   margin: 0;
   cursor: pointer;
-  color: #00cfff;
+  color: var(--blue);
 }
 
 .loading {
@@ -76,6 +76,10 @@
 @media (max-width: 735px) {
   .header {
     flex-direction: column;
+  }
+
+  .poster {
+    align-self: center;
   }
 
   .name {
