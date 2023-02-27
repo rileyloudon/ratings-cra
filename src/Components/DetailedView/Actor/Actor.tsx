@@ -9,7 +9,7 @@ import styles from './Actor.module.css';
 
 type ActorData = Person | DetailedPerson | ApiError;
 
-const Movie = () => {
+const Actor = () => {
   const location = useLocation();
   const { actorId } = useParams();
 
@@ -118,4 +118,4 @@ const Movie = () => {
   );
 };
 
-export default Movie;
+export default Actor;
