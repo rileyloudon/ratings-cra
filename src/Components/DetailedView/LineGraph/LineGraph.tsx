@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   CartesianGrid,
   Label,
@@ -6,11 +6,13 @@ import {
   LineChart,
   ResponsiveContainer,
   Tooltip,
+  TooltipProps,
   XAxis,
   YAxis,
 } from 'recharts';
 import {
   DetailedMovie,
+  Episode,
   Movie,
   SearchResultMovie,
   SearchResultTv,
@@ -49,10 +51,15 @@ const LineGraph = ({
   highlightDot,
 }: LineGraphProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const tickFormatter = (value: string): string => {
-    const limit = 20;
-    if (value.length < limit) return value;
-    return `${value.substring(0, limit)}...`;
+    if (typeof value === 'string') {
+      const limit = 20;
+      if (value.length < limit) return value;
+      return `${value.substring(0, limit)}...`;
+    }
+    return value;
   };
 
   const handleClick = (e: ClickPayload) => {
@@ -66,12 +73,23 @@ const LineGraph = ({
           ? 'tvshow'
           : 'movie';
 
-      navigate(`/${type}/${payload.id}`);
+      if (location.pathname !== `/${type}/${payload.id}`)
+        navigate(`/${type}/${payload.id}`);
     }
   };
 
   const customDot = (e: DotPayload): JSX.Element => (
-    <circle key={e.cx} cx={e.cx} cy={e.cy} r='3' fill='var(--text)'>
+    <circle
+      key={e.cx}
+      cx={e.cx}
+      cy={e.cy}
+      r='3'
+      fill={
+        highlightDot && e.payload.title === highlightDot?.title
+          ? 'var(--blue)'
+          : 'var(--text)'
+      }
+    >
       {highlightDot && e.payload.title === highlightDot?.title && (
         <animate
           attributeName='r'
@@ -83,12 +101,28 @@ const LineGraph = ({
     </circle>
   );
 
+  const customTooltip = ({
+    active,
+    payload,
+  }: TooltipProps<number, string>): JSX.Element | null => {
+    if (active && payload && payload.length) {
+      const hovered = payload[0].payload as Episode | Movie;
+      return (
+        <div className={styles.tooltip}>
+          <p>{'name' in hovered ? hovered.name : hovered.title}</p>
+          <p>{`${'Rating'} : ${payload[0].value || ''}`}</p>
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <div className={styles.graph}>
-      <ResponsiveContainer width='100%' height={400}>
+      <ResponsiveContainer width='100%' height={350}>
         <LineChart
           // Key makes sure animation works
-          key={Math.random()}
+          key={location.pathname}
           data={data}
           onClick={(e) => handleClick(e)}
           style={allowClick && { cursor: 'pointer' }}
@@ -96,7 +130,7 @@ const LineGraph = ({
             top: 5,
             right: 75,
             left: 10,
-            bottom: 75,
+            bottom: 85,
           }}
         >
           <Line
@@ -105,18 +139,19 @@ const LineGraph = ({
             stroke='var(--text)'
             type='monotone'
             dot={(e: DotPayload) => customDot(e)}
+            activeDot={{ fill: 'var(--blue)', stroke: 'var(--blue)' }}
           />
           <XAxis
             tick={{ fill: 'var(--text)' }}
-            dataKey={xAxisDataKey}
+            dataKey={xAxisDataKey.toString()}
             interval={0}
             tickFormatter={tickFormatter}
-            angle={315}
+            angle={xAxisLabel === 'Episode' ? 0 : 315}
           >
             <Label
               value={xAxisLabel}
               position='insideBottom'
-              offset={-60}
+              offset={-70}
               style={{ fill: 'var(--text)' }}
             />
           </XAxis>
@@ -125,6 +160,7 @@ const LineGraph = ({
             type='number'
             domain={[0, 10]}
             tickCount={6}
+            allowDecimals={false}
             allowDataOverflow={false}
           >
             <Label
@@ -138,6 +174,7 @@ const LineGraph = ({
             wrapperClassName={styles['tooltip-wrapper']}
             contentStyle={{ backgroundColor: 'var(--background)' }}
             cursor={{ stroke: 'var(--text', opacity: '75%' }}
+            content={customTooltip}
           />
           <CartesianGrid strokeDasharray='2 1' opacity='50%' />
         </LineChart>
