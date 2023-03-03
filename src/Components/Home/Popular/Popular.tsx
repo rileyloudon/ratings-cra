@@ -37,11 +37,10 @@ const Popular = () => {
 
     return (
       <div className={styles.posters}>
-        {/* use media_type to set variables */}
         {currentPopular?.map((item) => {
           const imgPath =
-            'profile_path' in item ? item.profile_path : item.poster_path;
-          const name = 'name' in item ? item.name : item.title;
+            item.media_type === 'person' ? item.profile_path : item.poster_path;
+          const name = item.media_type === 'movie' ? item.title : item.name;
 
           let link = 'movie';
           if (item.media_type === 'tv') link = 'tvshow';
