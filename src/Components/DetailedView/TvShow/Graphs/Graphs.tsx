@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ApiError, DetailedTv, Episodes, Season } from '../../../../interfaces';
+import { ApiError, DetailedTv, Episode, Season } from '../../../../interfaces';
 import LineGraph from '../../LineGraph/LineGraph';
 import fetchGraphData from './fetchGraphData';
 import styles from './Graphs.module.css';
@@ -15,7 +15,7 @@ const Graphs = ({ tvData }: GraphsProps) => {
 
   const [seasonData, setSeasonData] = useState<SeasonData>();
   const [seasonSelector, setSeasonSelector] = useState<string>('season/1');
-  const [displayedData, setDisplayedData] = useState<Episodes[]>();
+  const [displayedData, setDisplayedData] = useState<Episode[]>();
   const [error, setError] = useState<Error | false>(false);
 
   useEffect(() => {
@@ -139,8 +139,8 @@ const Graphs = ({ tvData }: GraphsProps) => {
       {displayedData && (
         <LineGraph
           data={displayedData}
-          xAxisDataKey='name'
-          xAxisLabel='Episode Name'
+          xAxisDataKey='episode_number'
+          xAxisLabel='Episode'
         />
       )}
     </div>
