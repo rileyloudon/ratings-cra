@@ -9,11 +9,11 @@ const Footer = () => (
     </p>
     <p className={styles.from}>
       Data from
-      <a href='https://www.themoviedb.org/'>
+      <a href='https://www.themoviedb.org/' target='_blank' rel='noreferrer'>
         <TMDBLogo />
       </a>
       and
-      <a href='https://www.justwatch.com/'>
+      <a href='https://www.justwatch.com/' target='_blank' rel='noreferrer'>
         <JustWatchLogo />
       </a>
     </p>
