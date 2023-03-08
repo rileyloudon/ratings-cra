@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { ApiError, Person, DetailedPerson } from '../../../interfaces';
 import Graphs from './Graphs/Graphs';
 import NoPoster from '../../NoPoster/NoPoster';
@@ -10,14 +10,25 @@ import styles from './Actor.module.css';
 type ActorData = Person | DetailedPerson | ApiError;
 
 const Actor = () => {
-  const location = useLocation();
   const { actorId } = useParams();
 
-  const [actorData, setActorData] = useState<ActorData>(
-    (location.state as Person) || null
-  );
+  const [actorData, setActorData] = useState<ActorData | null>(null);
+  const [textHeight, setTextHeight] = useState<number>(0);
   const [showMoreBio, setShowMoreBio] = useState<boolean>(false);
   const [error, setError] = useState<Error | false>(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  const handleElementResize = () => {
+    if (ref.current && ref.current.scrollHeight !== textHeight)
+      setTextHeight(ref.current?.offsetHeight);
+  };
+
+  const resizeObserver = new ResizeObserver(handleElementResize);
+
+  useLayoutEffect(() => {
+    if (ref.current) resizeObserver.observe(ref.current);
+    return () => resizeObserver.disconnect();
+  });
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -32,37 +43,10 @@ const Actor = () => {
   }, [actorId]);
 
   const getAge = () => {
-    if ('birthday' in actorData) {
+    if (actorData && 'birthday' in actorData) {
       const ageDiff = Date.now() - new Date(actorData.birthday).getTime();
       const date = new Date(ageDiff);
       return <span>{Math.abs(date.getUTCFullYear() - 1970)} Years Old</span>;
-    }
-    return null;
-  };
-
-  const getBio = () => {
-    if ('biography' in actorData) {
-      return (
-        <div className={styles.bio}>
-          {actorData.biography.length > 1250 ? (
-            <>
-              <p>
-                {showMoreBio
-                  ? actorData.biography
-                  : `${actorData.biography.substring(0, 1250)}...`}
-              </p>
-              <button
-                type='button'
-                onClick={() => setShowMoreBio(!showMoreBio)}
-              >
-                {showMoreBio ? 'Read Less' : 'Read More'}
-              </button>
-            </>
-          ) : (
-            <p>{actorData.biography}</p>
-          )}
-        </div>
-      );
     }
     return null;
   };
@@ -92,16 +76,28 @@ const Actor = () => {
         ) : (
           <NoPoster />
         )}
-        <div className={styles.text}>
-          <h2 className={styles.name}>{actorData.name}</h2>
-          <div className={styles.info}>
-            {getAge()}
-            {'combined_credits' in actorData && (
+        {'biography' in actorData && (
+          <div
+            ref={ref}
+            className={`${styles.text} ${
+              textHeight >= 450 && !showMoreBio
+                ? styles['hidden-bio']
+                : styles['long-bio']
+            }`}
+          >
+            <h2 className={styles.name}>{actorData.name}</h2>
+            <div className={styles.info}>
+              {getAge()}
               <span>{actorData.combined_credits.cast.length} Credits</span>
-            )}
+            </div>
+            <p className={styles.bio}>{actorData.biography}</p>
           </div>
-          {getBio()}
-        </div>
+        )}
+        {textHeight >= 450 && (
+          <button type='button' onClick={() => setShowMoreBio(!showMoreBio)}>
+            {showMoreBio ? 'Read Less' : 'Read More'}
+          </button>
+        )}
       </div>
     );
   };
