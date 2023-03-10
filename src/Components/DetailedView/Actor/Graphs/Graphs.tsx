@@ -8,7 +8,7 @@ interface GraphsProps {
 }
 
 const Graphs = ({ credits }: GraphsProps) => {
-  const creditsToDisplay = 10;
+  const creditsToDisplay = window.innerWidth > 400 ? 10 : 5;
 
   const [displayedData, setDisplayedData] = useState<(Movie | TvShow)[]>(
     credits.slice(0, creditsToDisplay)

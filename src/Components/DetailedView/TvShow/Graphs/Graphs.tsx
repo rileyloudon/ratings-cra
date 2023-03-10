@@ -11,7 +11,11 @@ interface GraphsProps {
 type SeasonData = Season | ApiError;
 
 const Graphs = ({ tvData }: GraphsProps) => {
-  const episodesToDisplay = 10;
+  const episodesToDisplay =
+    window.innerWidth > 400 &&
+    tvData.number_of_episodes / tvData.number_of_seasons >= 100
+      ? 10
+      : 5;
 
   const [seasonData, setSeasonData] = useState<SeasonData>();
   const [seasonSelector, setSeasonSelector] = useState<string>('season/1');
@@ -44,7 +48,7 @@ const Graphs = ({ tvData }: GraphsProps) => {
       setDisplayedData(
         seasonData[seasonSelector].episodes.slice(0, episodesToDisplay)
       );
-  }, [seasonData, seasonSelector]);
+  }, [seasonData, seasonSelector, episodesToDisplay]);
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
     setSeasonSelector(e.target.value);
