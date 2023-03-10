@@ -36,12 +36,12 @@
   }
 
   .item img {
-    width: 225px;
+    width: 200px;
   }
 }
 
 @media (max-width: 375px) {
   .item img {
-    width: 175px;
+    width: 150px;
   }
 }
