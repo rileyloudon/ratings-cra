@@ -59,6 +59,7 @@
 .overview {
   margin-top: 16px;
   margin-bottom: 16px;
+  white-space: pre-line;
 }
 
 .info .genres::before {
