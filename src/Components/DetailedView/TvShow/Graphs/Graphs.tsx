@@ -12,10 +12,10 @@ type SeasonData = Season | ApiError;
 
 const Graphs = ({ tvData }: GraphsProps) => {
   const episodesToDisplay =
-    window.innerWidth > 400 &&
-    tvData.number_of_episodes / tvData.number_of_seasons >= 100
-      ? 10
-      : 5;
+    window.innerWidth < 400 &&
+    tvData.number_of_episodes / tvData.number_of_seasons > 100
+      ? 5
+      : 10;
 
   const [seasonData, setSeasonData] = useState<SeasonData>();
   const [seasonSelector, setSeasonSelector] = useState<string>('season/1');
