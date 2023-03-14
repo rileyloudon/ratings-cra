@@ -20,6 +20,7 @@ export interface SearchResultTv extends TvShow {
 }
 
 export interface DetailedTv extends TvShow {
+  number_of_episodes: number;
   number_of_seasons: number;
   episode_run_time: number[];
   genres: { id: number; name: string }[];
