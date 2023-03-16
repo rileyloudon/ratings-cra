@@ -23,4 +23,15 @@
 .footer .from {
   display: flex;
   align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 735px) {
+  .footer {
+    font-size: 14px;
+  }
+
+  .footer svg {
+    width: 80px;
+  }
 }
