@@ -56,7 +56,7 @@ const LineGraph = ({
   const tickFormatter = (value: string): string => {
     if (typeof value === 'string') {
       const limit = 20;
-      if (value.length < limit) return value;
+      if (value.length <= limit) return value;
       return `${value.substring(0, limit)}...`;
     }
     return value;
@@ -110,7 +110,7 @@ const LineGraph = ({
       return (
         <div className={styles.tooltip}>
           <p>{'name' in hovered ? hovered.name : hovered.title}</p>
-          <p>{`${'Rating'} : ${payload[0].value || ''}`}</p>
+          <p>{`${'Rating'} : ${payload[0].value || 'None'}`}</p>
         </div>
       );
     }
