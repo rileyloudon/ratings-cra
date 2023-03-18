@@ -6,7 +6,8 @@ import TvShow from './Components/DetailedView/TvShow/TvShow';
 import Movie from './Components/DetailedView/Movie/Movie';
 import Actor from './Components/DetailedView/Actor/Actor';
 import Header from './Components/Header/Header';
-import './App.css';
+import Footer from './Components/Footer/Footer';
+import styles from './App.module.css';
 
 const App = () => {
   const [currentSearch, setCurrentSearch] = useState<string>('');
@@ -18,22 +19,28 @@ const App = () => {
   }, []);
 
   return (
-    <div className='App'>
+    <div className={styles.app}>
       <BrowserRouter>
         <Header
           currentSearch={currentSearch}
           updateCurrentSearch={updateCurrentSearch}
         />
-        <Routes>
-          <Route
-            path='*'
-            element={<Home updateCurrentSearch={updateCurrentSearch} />}
-          />
-          <Route path='search=:title/:pageNumber' element={<SearchResults />} />
-          <Route path='tvshow/:tvId' element={<TvShow />} />
-          <Route path='movie/:movieId' element={<Movie />} />
-          <Route path='actor/:actorId' element={<Actor />} />
-        </Routes>
+        <div className={styles.content}>
+          <Routes>
+            <Route
+              path='*'
+              element={<Home updateCurrentSearch={updateCurrentSearch} />}
+            />
+            <Route
+              path='search=:title/:pageNumber'
+              element={<SearchResults />}
+            />
+            <Route path='tvshow/:tvId' element={<TvShow />} />
+            <Route path='movie/:movieId' element={<Movie />} />
+            <Route path='actor/:actorId' element={<Actor />} />
+          </Routes>
+        </div>
+        <Footer />
       </BrowserRouter>
     </div>
   );
