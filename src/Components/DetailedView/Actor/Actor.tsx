@@ -42,13 +42,10 @@ const Actor = () => {
     return () => abortController.abort();
   }, [actorId]);
 
-  const getAge = () => {
-    if (actorData && 'birthday' in actorData) {
-      const ageDiff = Date.now() - new Date(actorData.birthday).getTime();
-      const date = new Date(ageDiff);
-      return <span>{Math.abs(date.getUTCFullYear() - 1970)} Years Old</span>;
-    }
-    return null;
+  const getAge = (actorBirthday: string) => {
+    const ageDiff = Date.now() - new Date(actorBirthday).getTime();
+    const date = new Date(ageDiff);
+    return <span>{Math.abs(date.getUTCFullYear() - 1970)} Years Old</span>;
   };
 
   const renderActor = (): JSX.Element => {
@@ -87,7 +84,7 @@ const Actor = () => {
           >
             <h2 className={styles.name}>{actorData.name}</h2>
             <div className={styles.info}>
-              {getAge()}
+              {getAge(actorData.birthday)}
               <span>{actorData.combined_credits.cast.length} Credits</span>
             </div>
             <p className={styles.bio}>{actorData.biography}</p>
